@@ -8,6 +8,7 @@ import java.io.File;
 import weka.core.Instances;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.*;
+import weka.filters.unsupervised.instance.SparseToNonSparse;
 
 public class TransformRaw {
 
@@ -16,7 +17,7 @@ public class TransformRaw {
 	 * args[0]: es el path donde se encuentra el Raw a transformar.
 	 * args[1]: es el path donde vas a depositar el Raw ya transformado.
 	 * args[2]: es el path donde se va a guardar el diccionario.
-	 * @param args Parámetros de entrada. 
+	 * @param args Parï¿½metros de entrada. 
 	 */
 	public static void main(String[] args) throws Exception {
 
@@ -49,10 +50,19 @@ public class TransformRaw {
 			filter.setLowerCaseTokens(true);
 			filter.setInputFormat(data);
 			dataFiltered = Filter.useFilter(data, filter);
-
+			
+			
+			/*
+			 * Convertimos a formato Non Sparse
+			 * 
+			 */
+			
+			SparseToNonSparse sparseFilter = new SparseToNonSparse();
+			sparseFilter.setInputFormat(dataFiltered);
+			dataFiltered = Filter.useFilter(dataFiltered, sparseFilter);
 
 			/*
-			 * Hacemos que la clase sea el último atributo
+			 * Hacemos que la clase sea el ï¿½ltimo atributo
 			 */
 			Reorder reorderFilter = new Reorder();
 			reorderFilter.setInputFormat(dataFiltered);
@@ -61,7 +71,7 @@ public class TransformRaw {
 			dataFiltered.setClassIndex(dataFiltered.numAttributes()-1);
 
 			/*
-			 * Damos a la relación su nombre original
+			 * Damos a la relaciï¿½n su nombre original
 			 */
 			dataFiltered.setRelationName(relationName);
 

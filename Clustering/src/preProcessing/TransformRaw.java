@@ -8,94 +8,51 @@ import java.io.File;
 import weka.core.Instances;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.*;
-import weka.filters.unsupervised.instance.SparseToNonSparse;
 
 public class TransformRaw {
 
 	/**
-	 * Transforma el espacio de atributos del conjunto de entrenamiento a BoW o TF-IDF.
-	 *
-	 * @param args Par谩metros de entrada. En caso de no introducir ninguno se muestra una descripci贸n de estos.
+	 * Transforma el espacio de atributos del conjunto de entrenamiento a TF-IDF Sparse.
+	 * args[0]: es el path donde se encuentra el Raw a transformar.
+	 * args[1]: es el path donde vas a depositar el Raw ya transformado.
+	 * args[2]: es el path donde se va a guardar el diccionario.
+	 * @param args Par醡etros de entrada. 
 	 */
 	public static void main(String[] args) throws Exception {
 
-		if (args.length == 0) {
-			System.out.println("=====Transform Raw=====");
-			System.out.println("Este programa tiene como funci贸n transformar el espacio de atributos del conjunto de entrenamiento a BoW o TF锟絀DF.");
-			System.out.println("Este programa necesita que introduzcas 5 argumentos para funcionar correctamente.");
-			System.out.println("PRECONDICIONES:\nEl primer argumento ser谩 el path del conjunto de entrenamiento a transformar. " +
-					"El segundo es el path destino. El tercero indicar谩 si queremos transformar a BoW o TF-IDF," +
-					" los valores v谩lidos: 'BOW' , 'TF-IDF'. El cuarto indicar谩 si queremos una representaci贸n Sparse o " +
-					"NonSparse, los valores v谩lidos: 'True' , 'False'. Y el 煤ltimo ser谩 el path donde guardar el diccionario generado");
-			System.out.println("POSTCONDICIONES:\nEl resultado de esta aplicaci贸n ser谩 una representaci贸n BoW o TF-IDF del espacio de atributos del conjunto de entrenamiento.\n");
-			System.out.println("Lista de argumentos:\n-Path del conjunto de entrenamiento a transformar.\n" +
-													"-Path de salida.\n" +
-													"-Opci贸n BoW o TF-IDF: BOW/TF-IDF.\n" +
-													"-Opci贸n Sparse: true/false.\n" +
-													"-Path del diccionario generado.");
-			System.out.println("Ejemplo de una correcta ejecuci贸n: java -jar TransformRaw.jar /path/to/train.arff /path/to/trainBOW.arff BOW NonSparse /path/to/diccionario");
-			System.exit(0);
-		} else {
 			String pathIn = "";
 			String pathOut = "";
-			String format = "";
-			boolean sparse = false;
 			String pathDictionary = "";
 
-			if (args.length == 5){
-				pathIn = args[0];
-				pathOut = args[1];
-				format = args[2];
-				sparse = Boolean.parseBoolean(args[3]);
-				pathDictionary = args[4];
-			}else{
-				CommonUtilities.printlnError("Error en el input. Revise su sintaxis.");
-				System.exit(1);
-			}
+			pathIn = args[0];
+			pathOut = args[1];
+			pathDictionary = args[2];
 
+			/*
+			 * Indicamos la clase y cargamos las instancias
+			 */
 			Instances data = CommonUtilities.loadArff(pathIn, -1);
 			data.setClassIndex(data.numAttributes() - 1);
 			StringToWordVector filter;
 			Instances dataFiltered = null;
 			String relationName = data.relationName();
 
-			/*
-			 * Transformamos el arff raw a BOW.
-			 */
-			if (format.equals("BOW")) {
-				filter = new StringToWordVector(99999);
-				filter.setDictionaryFileToSaveTo(new File(pathDictionary));
-				filter.setOutputWordCounts(true);
-				filter.setLowerCaseTokens(true);
-				filter.setInputFormat(data);
-				dataFiltered = Filter.useFilter(data, filter);
-
-			}
+			
 			/*
 			 * Transformamos el arff raw a TF-IDF
 			 */
-			else if (format.equals("TF-IDF")) {
-				filter = new StringToWordVector(99999);
-				filter.setDictionaryFileToSaveTo(new File(pathDictionary));
-				filter.setTFTransform(true);
-				filter.setIDFTransform(true);
-				filter.setOutputWordCounts(true);
-				filter.setLowerCaseTokens(true);
-				filter.setInputFormat(data);
-				dataFiltered = Filter.useFilter(data, filter);
-			}
+			filter = new StringToWordVector(99999);
+			filter.setDictionaryFileToSaveTo(new File(pathDictionary));
+			filter.setTFTransform(true);
+			filter.setIDFTransform(true);
+			filter.setOutputWordCounts(true);
+			filter.setLowerCaseTokens(true);
+			filter.setInputFormat(data);
+			dataFiltered = Filter.useFilter(data, filter);
+
 
 			/*
-			 * Aplicamos el filtro NonSparseToSparse
-			 */
-			if (!sparse) {
-				SparseToNonSparse sparseFilter = new SparseToNonSparse();
-				sparseFilter.setInputFormat(dataFiltered);
-				dataFiltered = Filter.useFilter(dataFiltered, sparseFilter);
-			}
-
-			/*
-			 * Hacemos que la clase sea el 煤ltimo atributo
+			 * Hacemos que la clase sea el 鷏timo atributo
 			 */
 			Reorder reorderFilter = new Reorder();
 			reorderFilter.setInputFormat(dataFiltered);
@@ -104,7 +61,7 @@ public class TransformRaw {
 			dataFiltered.setClassIndex(dataFiltered.numAttributes()-1);
 
 			/*
-			 * Damos a la relaci贸n su nombre original
+			 * Damos a la relaci髇 su nombre original
 			 */
 			dataFiltered.setRelationName(relationName);
 
@@ -115,4 +72,3 @@ public class TransformRaw {
 		}
 
 	}
-}

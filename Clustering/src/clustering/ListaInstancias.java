@@ -51,5 +51,8 @@ public class ListaInstancias {
 	public void vaciarLista() {
 		lista = new ArrayList<Instancia>();
 	}
-
+	
+	public Iterator<Instancia> getIterator(){
+		return lista.iterator();
+	}
 }

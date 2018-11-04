@@ -154,5 +154,66 @@ public class KmeansAlgorithm {
 		}
 
 	}
+	
+	public double getSilhouetteAgrupamiento(){
+		double shilhouette = 0;
+		int i = 0;
+		Iterator<Cluster> it = resultado.iterator();
+		while (it.hasNext()) {
+			Cluster c = it.next();
+			Iterator<Instancia> it2 = c.getInstancias().getIterator();
+			while (it2.hasNext()) {
+				Instancia inst = it2.next();
+				i = i + 1;
+				shilhouette = shilhouette + this.getSilhouette(inst, c);
+			}
+		}
+		return (shilhouette/i);
+	}
+	
+	public double getSilhouette(Instancia pInstancia, Cluster pCluster) {
+		double cohexion = pCluster.getCohexion(pInstancia);
+		double separacion = this.getSeparacion(pCluster, pInstancia);
+		if(cohexion >= separacion){
+			return ((separacion - cohexion)/cohexion);
+		}else {return ((separacion - cohexion)/separacion);} 
+	}
+	
+	private double getSeparacion (Cluster pCluster, Instancia pInstancia){
+		int i = 0;
+		double resultado = 0;
+		Cluster masCercano = getClusterMasCercano(pCluster);
+		Iterator<Instancia> it = masCercano.getInstancias().getIterator();
+		while (it.hasNext()) {
+			resultado = resultado + it.next().getDistanceTo(pInstancia.getLista());
+			i=i+1;
+		}		
+		return resultado/i;	
+	}
+	
+	private Cluster getClusterMasCercano (Cluster pCluster){
+		Iterator<Cluster> it = resultado.iterator();
+		ArrayList<Double> distancias = new ArrayList<Double>();
+		ArrayList<Cluster> clusters = new ArrayList<Cluster>();
+		Cluster resultado = null;
+		int i = 0;
+		Double comp;
+		while (it.hasNext()) {
+			Cluster x = it.next();
+			if (!x.equals(pCluster)){
+				distancias.add(pCluster.getVector().getDistanceTo(x.getVector().getLista()));
+				clusters.add(x);
+			}
+		}
+		comp = distancias.get(0);
+		for(Double dis : distancias){
+			if (comp >= dis){
+				comp=dis;
+				resultado = clusters.get(i);
+			}
+			i=i+1;
+		}
+		return resultado;
+	}
 
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class KmeansAlgorithm {
-
+	// número de clusters
 	private final int					k;
 	/**
 	 * //completelink o singlelink-->singlelink
@@ -137,25 +137,16 @@ public class KmeansAlgorithm {
 		throw new UnsupportedOperationException();
 	}
 
-	public Instancia getVectorAleatorio() {
-
-		return DataBase.getDataBase().getRandomVector();
+	public double getSilhouette(Instancia pInstancia, Cluster pCluster) {
+		double cohexion = pCluster.getCohexion(pInstancia);
+		double separacion = this.getSeparacion(pCluster, pInstancia);
+		if (cohexion >= separacion)
+			return (separacion - cohexion) / cohexion;
+		else
+			return (separacion - cohexion) / separacion;
 	}
 
-	private void asignarVectorDivisionClusters() {
-		// TODO Auto-generated method stub
-
-	}
-
-	private void recalcularCetroides() {
-		Iterator<Cluster> it = resultado.iterator();
-		while (it.hasNext()) {
-			it.next().recalcularCentroide();
-		}
-
-	}
-	
-	public double getSilhouetteAgrupamiento(){
+	public double getSilhouetteAgrupamiento() {
 		double shilhouette = 0;
 		int i = 0;
 		Iterator<Cluster> it = resultado.iterator();
@@ -168,30 +159,32 @@ public class KmeansAlgorithm {
 				shilhouette = shilhouette + this.getSilhouette(inst, c);
 			}
 		}
-		return (shilhouette/i);
+		return shilhouette / i;
 	}
-	
-	public double getSilhouette(Instancia pInstancia, Cluster pCluster) {
-		double cohexion = pCluster.getCohexion(pInstancia);
-		double separacion = this.getSeparacion(pCluster, pInstancia);
-		if(cohexion >= separacion){
-			return ((separacion - cohexion)/cohexion);
-		}else {return ((separacion - cohexion)/separacion);} 
+
+	public Instancia getVectorAleatorio() {
+
+		return DataBase.getDataBase().getRandomVector();
 	}
-	
-	private double getSeparacion (Cluster pCluster, Instancia pInstancia){
+
+	private void asignarVectorDivisionClusters() {
+		// vamos a dividir las instancias en tantos grupos como clusters haya
+		// el orden de la división será segun viene en el .arff
+		// y escogeremos un vector aleatorio de cada grupo y se lo asignaremos a
+		// cada cluster
 		int i = 0;
-		double resultado = 0;
-		Cluster masCercano = getClusterMasCercano(pCluster);
-		Iterator<Instancia> it = masCercano.getInstancias().getIterator();
-		while (it.hasNext()) {
-			resultado = resultado + it.next().getDistanceTo(pInstancia.getLista());
-			i=i+1;
-		}		
-		return resultado/i;	
+		System.out.println("Valores de los centroides iniciales: ");
+		while (i < k) {
+			Cluster nuevo = new Cluster(getVectorAleatorioDivision(k, i));
+			if (!resultado.contains(nuevo)) {
+				resultado.add(nuevo);
+				nuevo.printCentroide();
+				i++;
+			}
+		}
 	}
-	
-	private Cluster getClusterMasCercano (Cluster pCluster){
+
+	private Cluster getClusterMasCercano(Cluster pCluster) {
 		Iterator<Cluster> it = resultado.iterator();
 		ArrayList<Double> distancias = new ArrayList<Double>();
 		ArrayList<Cluster> clusters = new ArrayList<Cluster>();
@@ -200,20 +193,45 @@ public class KmeansAlgorithm {
 		Double comp;
 		while (it.hasNext()) {
 			Cluster x = it.next();
-			if (!x.equals(pCluster)){
+			if (!x.equals(pCluster)) {
 				distancias.add(pCluster.getVector().getDistanceTo(x.getVector().getLista()));
 				clusters.add(x);
 			}
 		}
 		comp = distancias.get(0);
-		for(Double dis : distancias){
-			if (comp >= dis){
-				comp=dis;
+		for (Double dis : distancias) {
+			if (comp >= dis) {
+				comp = dis;
 				resultado = clusters.get(i);
 			}
-			i=i+1;
+			i = i + 1;
 		}
 		return resultado;
+	}
+
+	private double getSeparacion(Cluster pCluster, Instancia pInstancia) {
+		int i = 0;
+		double resultado = 0;
+		Cluster masCercano = getClusterMasCercano(pCluster);
+		Iterator<Instancia> it = masCercano.getInstancias().getIterator();
+		while (it.hasNext()) {
+			resultado = resultado + it.next().getDistanceTo(pInstancia.getLista());
+			i = i + 1;
+		}
+		return resultado / i;
+	}
+
+	private Instancia getVectorAleatorioDivision(int k2, int i) {
+		// TODO Auto-generated method stub
+		return DataBase.getDataBase().getRandomVectorDivision(k2, i);
+	}
+
+	private void recalcularCetroides() {
+		Iterator<Cluster> it = resultado.iterator();
+		while (it.hasNext()) {
+			it.next().recalcularCentroide();
+		}
+
 	}
 
 }

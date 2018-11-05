@@ -27,6 +27,11 @@ public class DataBase {
 		return instancias.getRandomVector();
 	}
 
+	public Instancia getRandomVectorDivision(int k2, int i) {
+		// TODO Auto-generated method stub
+		return instancias.getRandomVectorDivision(k2, i);
+	}
+
 	public void inicializarInstancias() {
 		readArff();
 		instancias.print();
@@ -38,7 +43,7 @@ public class DataBase {
 		try {
 			// leemos el fichero arff
 			reader = new BufferedReader(new FileReader(
-					//"C:/Users/Frank/git/Clustering_Mineria/Clustering/src/arffFiles/diabetestfidf.arff"
+					// "C:/Users/Frank/git/Clustering_Mineria/Clustering/src/arffFiles/diabetestfidf.arff"
 					"C:/Users/User/git/Clustering_Mineria/Clustering/src/arffFiles/diabetestfidf.arff"));
 			ArffReader arff = new ArffReader(reader);
 			// obtenemos las instancias

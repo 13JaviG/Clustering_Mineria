@@ -8,13 +8,13 @@ public class Test {
 		// TODO Auto-generated method stub
 		String[] o = new String[3];
 		o[0] = "-d";
-		o[1] = "C:/Users/olizy/Desktop/datasets/movies_reviews/train";
-		o[2] = "C:/Users/olizy/Desktop/train.arff";
+		o[1] = "C:/Users/Javi/Desktop/movies_reviews/train";
+		o[2] = "C:/Users/Javi/Desktop/train.arff";
 
 		String[] j = new String[5];
-		j[0] = "C:/Users/olizy/Desktop/train.arff";
-		j[1] = "C:/Users/olizy/Desktop/trainTFIDF.arff";
-		j[2] = "C:/Users/olizy/Desktop/dicc";
+		j[0] = "C:/Users/Javi/Desktop/train.arff";
+		j[1] = "C:/Users/Javi/Desktop/trainTFIDF.arff";
+		j[2] = "C:/Users/Javi/Desktop/dicc";
 
 //		String[] k = new String[5];
 //		k[0] = "C:/Users/olizy/Desktop/dicc";

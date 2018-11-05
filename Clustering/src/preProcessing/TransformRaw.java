@@ -57,7 +57,6 @@ public class TransformRaw {
 			filter.setTFTransform(true);
 			filter.setIDFTransform(true);
 			filter.setOutputWordCounts(true);
-			filter.setLowerCaseTokens(true);
 			filter.setInputFormat(data);
 			dataFiltered = Filter.useFilter(data, filter);
 			

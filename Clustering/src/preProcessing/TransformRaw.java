@@ -1,6 +1,5 @@
 package preProcessing;
 
-
 import utilities.CommonUtilities;
 
 import java.io.File;
@@ -17,18 +16,15 @@ public class TransformRaw {
 	 * Transforma el espacio de atributos del conjunto de entrenamiento a TF-IDF Sparse.
 	 * args[0]: es el path donde se encuentra el Raw a transformar.
 	 * args[1]: es el path donde vas a depositar el Raw ya transformado.
-	 * args[2]: es el path donde se va a guardar el diccionario.
-	 * @param args Parï¿½metros de entrada. 
+	 * @param args ParÃ¡metros de entrada. 
 	 */
 	public static void main(String[] args) throws Exception {
 
 			String pathIn = "";
 			String pathOut = "";
-			String pathDictionary = "";
 
 			pathIn = args[0];
 			pathOut = args[1];
-			pathDictionary = args[2];
 
 			/*
 			 * Indicamos la clase y cargamos las instancias
@@ -44,14 +40,13 @@ public class TransformRaw {
 			 * Transformamos el arff raw a TF-IDF 
 			 */
 			filter = new StringToWordVector();
-			filter.setDictionaryFileToSaveTo(new File(pathDictionary));
 			
-			//Indicamos que tiene que pasar a minúsculas todas las letras del texto
+			//Indicamos que tiene que pasar a minï¿½sculas todas las letras del texto
 			filter.setLowerCaseTokens(true);		
 			
-			//Creamos un Tokenizer y le indicamos qué símbolos tiene que excluir
+			//Creamos un Tokenizer y le indicamos quï¿½ sï¿½mbolos tiene que excluir
 			WordTokenizer tokenizer = new WordTokenizer();
-			tokenizer.setDelimiters("\r\t\n .,;:\'\"()?¿!¡¬-><#$€%&*+/@^_=[]{}|\\`~0123456789");
+			tokenizer.setDelimiters("\r\t\n .,;:\'\"()?ï¿½!ï¿½ï¿½-><#$ï¿½%&*+/@^_=[]{}|\\`~0123456789");
 			filter.setTokenizer(tokenizer);	
 					
 			filter.setTFTransform(true);

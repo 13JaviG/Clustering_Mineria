@@ -7,6 +7,7 @@ import weka.core.Instances;
 import weka.core.converters.CSVLoader;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.NominalToString;
+import weka.filters.unsupervised.attribute.Remove;
 
 public class CSVtoArff {
 
@@ -63,6 +64,12 @@ public class CSVtoArff {
 	                toStringFilter.setAttributeIndexes("last");
 	                toStringFilter.setInputFormat(instances);
 	                instances = Filter.useFilter(instances, toStringFilter);
+	                
+	                //Eliminamos atributos que no aportan informaci�n.
+	                Remove remove = new Remove();
+	                remove.setAttributeIndicesArray(new int[]{0, 1, 2, 4, 5, 6, 7});
+	                remove.setInputFormat(instances);
+	                instances = Filter.useFilter(instances, remove);
 
 	                // ponemos el nombre de la relación y los atributos
 	                instances.renameAttribute(instances.classIndex(), "@@class@@");

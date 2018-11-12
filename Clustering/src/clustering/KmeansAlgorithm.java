@@ -232,7 +232,11 @@ public class KmeansAlgorithm {
 				
 				Instancia inst = it2.next();
 				i = i + 1;
-				shilhouette = shilhouette + this.getSilhouette(inst, c);
+				double sh = this.getSilhouette(inst, c);
+				System.out.println(sh);
+				shilhouette = shilhouette + sh;
+				//shilhouette = shilhouette + this.getSilhouette(inst, c);
+				
 			}
 		}
 		

@@ -59,10 +59,68 @@ public class KmeansAlgorithm {
 			asignarInstancia(inst);
 		}
 	}
-
+	
 	public void asignarVector2kClusters() {
 		// TODO Auto-generated method stub
-
+		int i = 0;
+		System.out.println("Valores de los centroides iniciales: ");
+		while (i < (2*k)) {
+			Cluster nuevo = new Cluster(getVectorAleatorio());
+			if (!resultado.contains(nuevo)) {
+				resultado.add(nuevo);
+				nuevo.printCentroide();
+				i++;
+			}
+		}
+	}
+	
+	public ArrayList<Cluster> getKClustersMasAlejados(ArrayList<Cluster> pClusters){
+		///////////////////////falta partir el metodo grande y seguir con el calculo
+		///////////////////////los 2 primeros clusters hechos bien falta seguir en funcion de ellos
+		/////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////
+		return null;
+	}
+	
+	public ArrayList<Cluster> recalcular2KClusters(ArrayList<Cluster> pClusters){
+		int filycol = pClusters.size();
+		float [][] matriz = new float[filycol][filycol];
+		int i = 0;
+		int j = 0;
+		ArrayList<Cluster> Clusters = new ArrayList<Cluster>();
+		Iterator<Cluster> it = pClusters.iterator();
+		Iterator<Cluster> it2 = pClusters.iterator();
+		while (it.hasNext()) {
+			Cluster c = it.next();
+			while (it2.hasNext()) {
+				//if(matriz[i][j]!=null)
+				float dis = (float) c.getVector().getDistanceTo(it2.next().getVector().getLista());
+				matriz[i][j] = dis;
+				//matriz[j][i] = dis;
+				j = j+1;
+			}
+			i = i+1;
+		}		
+		i = j = 0;
+		int idef = 0;
+		int jdef = 0;
+		float disdef = 0;
+		while (i <= filycol){
+			while (j <= filycol){
+					if (matriz[i][j] > disdef){
+						idef = i;
+						jdef = j;
+						disdef = matriz[i][j];
+					}
+				j++;
+			}		
+			i++;
+		}
+		Clusters.add(pClusters.get(idef));
+		Clusters.add(pClusters.get(jdef));
+		return Clusters;
 	}
 
 	public void asignarVectorAleatorioClusters() {

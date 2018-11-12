@@ -17,6 +17,7 @@ public class KmeansAlgorithm {
 	private final int					iteraciones;
 	private final double				umbral;
 	private final ArrayList<Cluster>	resultado;
+	private final String				tipoDistancia;
 
 	/**
 	 *
@@ -27,23 +28,24 @@ public class KmeansAlgorithm {
 	 * @param pIter
 	 * @param pUmbr
 	 */
-	public KmeansAlgorithm(int pK, String pDist, String pInic, int pIter, double pUmbr) {
+	public KmeansAlgorithm(int pK, String pDist, String pInic, int pIter, double pUmbr, String pTipoDist) {
 		k = pK;
 		distInter = pDist;
 		inicializacion = pInic;
 		iteraciones = pIter;
 		resultado = new ArrayList<Cluster>();
 		umbral = pUmbr;
+		tipoDistancia = pTipoDist;
 	}
 
 	public void asignarInstancia(Instancia pInst) {
 		int i = 0;
 		int pos = 0;
-		double distancia = this.resultado.get(0).calcularDistancia(pInst.getLista());
+		double distancia = this.resultado.get(0).calcularDistancia(pInst.getLista(), tipoDistancia);
 		Iterator<Cluster> it = this.resultado.iterator();
 		while (it.hasNext()) {
 			Cluster nuevo = it.next();
-			if (nuevo.calcularDistancia(pInst.getLista()) < distancia) {
+			if (nuevo.calcularDistancia(pInst.getLista(), tipoDistancia) < distancia) {
 				pos = i;
 			}
 			i++;
@@ -59,12 +61,12 @@ public class KmeansAlgorithm {
 			asignarInstancia(inst);
 		}
 	}
-	
+
 	public void asignarVector2kClusters() {
 		// TODO Auto-generated method stub
 		int i = 0;
 		System.out.println("Valores de los centroides iniciales: ");
-		while (i < (2*k)) {
+		while (i < 2 * k) {
 			Cluster nuevo = new Cluster(getVectorAleatorio());
 			if (!resultado.contains(nuevo)) {
 				resultado.add(nuevo);
@@ -72,55 +74,6 @@ public class KmeansAlgorithm {
 				i++;
 			}
 		}
-	}
-	
-	public ArrayList<Cluster> getKClustersMasAlejados(ArrayList<Cluster> pClusters){
-		///////////////////////falta partir el metodo grande y seguir con el calculo
-		///////////////////////los 2 primeros clusters hechos bien falta seguir en funcion de ellos
-		/////////////////////////////////////////////////////////////////
-		/////////////////////////////////////////////////////////////////
-		/////////////////////////////////////////////////////////////////
-		/////////////////////////////////////////////////////////////////
-		return null;
-	}
-	
-	public ArrayList<Cluster> recalcular2KClusters(ArrayList<Cluster> pClusters){
-		int filycol = pClusters.size();
-		float [][] matriz = new float[filycol][filycol];
-		int i = 0;
-		int j = 0;
-		ArrayList<Cluster> Clusters = new ArrayList<Cluster>();
-		Iterator<Cluster> it = pClusters.iterator();
-		Iterator<Cluster> it2 = pClusters.iterator();
-		while (it.hasNext()) {
-			Cluster c = it.next();
-			while (it2.hasNext()) {
-				//if(matriz[i][j]!=null)
-				float dis = (float) c.getVector().getDistanceTo(it2.next().getVector().getLista());
-				matriz[i][j] = dis;
-				//matriz[j][i] = dis;
-				j = j+1;
-			}
-			i = i+1;
-		}		
-		i = j = 0;
-		int idef = 0;
-		int jdef = 0;
-		float disdef = 0;
-		while (i <= filycol){
-			while (j <= filycol){
-					if (matriz[i][j] > disdef){
-						idef = i;
-						jdef = j;
-						disdef = matriz[i][j];
-					}
-				j++;
-			}		
-			i++;
-		}
-		Clusters.add(pClusters.get(idef));
-		Clusters.add(pClusters.get(jdef));
-		return Clusters;
 	}
 
 	public void asignarVectorAleatorioClusters() {
@@ -171,7 +124,7 @@ public class KmeansAlgorithm {
 			ArrayList<String> list1 = this.resultado.get(0).getCentroide();
 			recalcularCetroides();
 			asignarInstanciasClusters();
-			double dist = this.resultado.get(0).calcularDistancia(list1);
+			double dist = this.resultado.get(0).calcularDistancia(list1, tipoDistancia);
 			System.out.println("Distancia iteración No" + i + ":  " + dist);
 			if (dist <= umbral) {
 				break;
@@ -201,16 +154,28 @@ public class KmeansAlgorithm {
 		throw new UnsupportedOperationException();
 	}
 
+	public ArrayList<Cluster> getKClustersMasAlejados(ArrayList<Cluster> pClusters) {
+		/////////////////////// falta partir el metodo grande y seguir con el
+		/////////////////////// calculo
+		/////////////////////// los 2 primeros clusters hechos bien falta seguir
+		/////////////////////// en funcion de ellos
+		/////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////
+		return null;
+	}
+
 	public double getSilhouette(Instancia pInstancia, Cluster pCluster) {
-		
-		//Calculamos la cohesión
-		double cohexion = pCluster.getDistanciaMedia(pInstancia);
-		
-		//Calculamos la separación
+
+		// Calculamos la cohesión
+		double cohexion = pCluster.getDistanciaMedia(pInstancia, tipoDistancia);
+
+		// Calculamos la separación
 		Cluster masCercano = getClusterMasCercano(pCluster);
-		double separacion = masCercano.getDistanciaMedia(pInstancia);
-		
-		//Comparamos la cohesión y la separación
+		double separacion = masCercano.getDistanciaMedia(pInstancia, tipoDistancia);
+
+		// Comparamos la cohesión y la separación
 		if (cohexion >= separacion)
 			return (separacion - cohexion) / cohexion;
 		else
@@ -218,37 +183,37 @@ public class KmeansAlgorithm {
 	}
 
 	public double getSilhouetteAgrupamiento() {
-		
+
 		double shilhouette = 0;
 		int i = 0;
 		Iterator<Cluster> it = resultado.iterator();
-		
+
 		while (it.hasNext()) {
-			
+
 			Cluster c = it.next();
-			//Iterator<Instancia> it2 = c.getInstancias().getIterator();
-			
-			//sillhouete con 10%
-			for(int j = 0; j < (c.getInstancias().getInstancias().size()-1);j++){
+			// Iterator<Instancia> it2 = c.getInstancias().getIterator();
+
+			// sillhouete con 10%
+			for (int j = 0; j < c.getInstancias().getInstancias().size() - 1; j++) {
 				Instancia inst = c.getInstancias().getInstancias().get(j);
-				j= (int) (j + ((c.getInstancias().getInstancias().size()-1)*0.1));
+				j = (int) (j + (c.getInstancias().getInstancias().size() - 1) * 0.1);
 				i = i + 1;
 				double sh = this.getSilhouette(inst, c);
 				System.out.println(sh);
 				shilhouette = shilhouette + sh;
 			}
-			/*while (it2.hasNext()) {
-				
-				Instancia inst = it2.next();
-				i = i + 1;
-				double sh = this.getSilhouette(inst, c);
-				System.out.println(sh);
-				shilhouette = shilhouette + sh;
-				//shilhouette = shilhouette + this.getSilhouette(inst, c);
-				
-			}*/
+			/*
+			 * while (it2.hasNext()) {
+			 *
+			 * Instancia inst = it2.next(); i = i + 1; double sh =
+			 * this.getSilhouette(inst, c); System.out.println(sh); shilhouette
+			 * = shilhouette + sh; //shilhouette = shilhouette +
+			 * this.getSilhouette(inst, c);
+			 *
+			 * }
+			 */
 		}
-		
+
 		return shilhouette / i;
 	}
 
@@ -257,8 +222,45 @@ public class KmeansAlgorithm {
 		return DataBase.getDataBase().getRandomVector();
 	}
 
-	
-	
+	public ArrayList<Cluster> recalcular2KClusters(ArrayList<Cluster> pClusters) {
+		int filycol = pClusters.size();
+		float[][] matriz = new float[filycol][filycol];
+		int i = 0;
+		int j = 0;
+		ArrayList<Cluster> Clusters = new ArrayList<Cluster>();
+		Iterator<Cluster> it = pClusters.iterator();
+		Iterator<Cluster> it2 = pClusters.iterator();
+		while (it.hasNext()) {
+			Cluster c = it.next();
+			while (it2.hasNext()) {
+				// if(matriz[i][j]!=null)
+				float dis = (float) c.getVector().getDistanceTo(it2.next().getVector().getLista(), tipoDistancia);
+				matriz[i][j] = dis;
+				// matriz[j][i] = dis;
+				j = j + 1;
+			}
+			i = i + 1;
+		}
+		i = j = 0;
+		int idef = 0;
+		int jdef = 0;
+		float disdef = 0;
+		while (i <= filycol) {
+			while (j <= filycol) {
+				if (matriz[i][j] > disdef) {
+					idef = i;
+					jdef = j;
+					disdef = matriz[i][j];
+				}
+				j++;
+			}
+			i++;
+		}
+		Clusters.add(pClusters.get(idef));
+		Clusters.add(pClusters.get(jdef));
+		return Clusters;
+	}
+
 	private void asignarVectorDivisionClusters() {
 		// vamos a dividir las instancias en tantos grupos como clusters haya
 		// el orden de la división será segun viene en el .arff
@@ -276,29 +278,27 @@ public class KmeansAlgorithm {
 		}
 	}
 
-	
 	private Cluster getClusterMasCercano(Cluster pCluster) {
-		
+
 		Iterator<Cluster> it = resultado.iterator();
 		double min = Integer.MAX_VALUE;
 		double dis = 0;
 		Cluster resultado = null;
-		
+
 		while (it.hasNext()) {
 			Cluster x = it.next();
 			if (!x.equals(pCluster)) {
-				dis = pCluster.getVector().getDistanceTo(x.getVector().getLista());
-				if(dis < min){
+				dis = pCluster.getVector().getDistanceTo(x.getVector().getLista(), tipoDistancia);
+				if (dis < min) {
 					resultado = x;
 					min = dis;
 				}
 			}
 		}
-		
+
 		return resultado;
 	}
 
-	
 	private Cluster getClusterMasDistante(Cluster pCluster) {
 		Iterator<Cluster> it = resultado.iterator();
 		ArrayList<Double> distancias = new ArrayList<Double>();
@@ -309,7 +309,7 @@ public class KmeansAlgorithm {
 		while (it.hasNext()) {
 			Cluster x = it.next();
 			if (!x.equals(pCluster)) {
-				distancias.add(pCluster.getVector().getDistanceTo(x.getVector().getLista()));
+				distancias.add(pCluster.getVector().getDistanceTo(x.getVector().getLista(), tipoDistancia));
 				clusters.add(x);
 			}
 		}
@@ -323,7 +323,6 @@ public class KmeansAlgorithm {
 		}
 		return resultado;
 	}
-
 
 	private Instancia getVectorAleatorioDivision(int k2, int i) {
 		// TODO Auto-generated method stub

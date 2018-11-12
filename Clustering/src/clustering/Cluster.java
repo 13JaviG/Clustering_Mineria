@@ -22,8 +22,8 @@ public class Cluster {
 		this.instancias.add(pInstancia);
 	}
 
-	public double calcularDistancia(ArrayList<String> pVector) {
-		return distancia = this.clusterVector.getDistanceTo(pVector);
+	public double calcularDistancia(ArrayList<String> pVector, String tipoDistancia) {
+		return distancia = this.clusterVector.getDistanceTo(pVector, tipoDistancia);
 	}
 
 	/**
@@ -43,16 +43,16 @@ public class Cluster {
 		return this.clusterVector.getLista();
 	}
 
-	public double getDistanciaMedia(Instancia pInstancia) {
+	public double getDistanciaMedia(Instancia pInstancia, String pTipoDistancia) {
 		// metodo que devuelve la cohexion de un cluster
-		
+
 		double resultado = 0;
 		int i = 0;
 		Iterator<Instancia> it = instancias.getIterator();
-		
+
 		while (it.hasNext()) {
-			
-			resultado = resultado + getDistancia(it.next(), pInstancia);
+
+			resultado = resultado + getDistancia(it.next(), pInstancia, pTipoDistancia);
 			i = i + 1;
 		}
 		// promedio de la suma de todas las distancias de un punto a todos los
@@ -92,26 +92,28 @@ public class Cluster {
 	}
 
 	public void recalcularCentroide() {
-		// recalcula el centroide haciendo el vector medio
-		ArrayList<String> sumaVectores = null;
-		this.instancias.getInstancias().get(0).getLista();
-		Iterator<Instancia> it = this.instancias.getInstancias().iterator();
-		while (it.hasNext()) {
-			if (sumaVectores == null) {
-				sumaVectores = it.next().getLista();
-			} else {
-				sumaVectores = sumarVectores(sumaVectores, it.next().getLista());
+		if (!this.instancias.getInstancias().isEmpty()) {
+			// recalcula el centroide haciendo el vector medio
+			ArrayList<String> sumaVectores = null;
+			this.instancias.getInstancias().get(0).getLista();
+			Iterator<Instancia> it = this.instancias.getInstancias().iterator();
+			while (it.hasNext()) {
+				if (sumaVectores == null) {
+					sumaVectores = it.next().getLista();
+				} else {
+					sumaVectores = sumarVectores(sumaVectores, it.next().getLista());
+				}
 			}
+			// dividimos cada valor entre el total de instancias en el cluster
+			clusterVector.setLista(mediaVectores(sumaVectores, this.instancias.getInstancias().size()));
+			// volvemos a vaciar las instancias del vector
+			this.instancias = new ListaInstancias();
 		}
-		// dividimos cada valor entre el total de instancias en el cluster
-		clusterVector.setLista(mediaVectores(sumaVectores, this.instancias.getInstancias().size()));
-		// volvemos a vaciar las instancias del vector
-		this.instancias = new ListaInstancias();
 	}
 
-	private double getDistancia(Instancia inst1, Instancia inst2) {
+	private double getDistancia(Instancia inst1, Instancia inst2, String tipoDistancia) {
 		// metodo que devuelve distancia entre dos instancias
-		return inst1.getDistanceTo(inst2.getLista());
+		return inst1.getDistanceTo(inst2.getLista(), tipoDistancia);
 	}
 
 	private ArrayList<String> mediaVectores(ArrayList<String> sumaVectores, int size) {

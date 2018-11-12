@@ -43,12 +43,15 @@ public class Cluster {
 		return this.clusterVector.getLista();
 	}
 
-	public double getCohexion(Instancia pInstancia) {
+	public double getDistanciaMedia(Instancia pInstancia) {
 		// metodo que devuelve la cohexion de un cluster
+		
 		double resultado = 0;
 		int i = 0;
 		Iterator<Instancia> it = instancias.getIterator();
+		
 		while (it.hasNext()) {
+			
 			resultado = resultado + getDistancia(it.next(), pInstancia);
 			i = i + 1;
 		}

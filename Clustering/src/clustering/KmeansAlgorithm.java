@@ -202,8 +202,15 @@ public class KmeansAlgorithm {
 	}
 
 	public double getSilhouette(Instancia pInstancia, Cluster pCluster) {
-		double cohexion = pCluster.getCohexion(pInstancia);
-		double separacion = this.getSeparacion(pCluster, pInstancia);
+		
+		//Calculamos la cohesión
+		double cohexion = pCluster.getDistanciaMedia(pInstancia);
+		
+		//Calculamos la separación
+		Cluster masCercano = getClusterMasCercano(pCluster);
+		double separacion = masCercano.getDistanciaMedia(pInstancia);
+		
+		//Comparamos la cohesión y la separación
 		if (cohexion >= separacion)
 			return (separacion - cohexion) / cohexion;
 		else
@@ -211,18 +218,24 @@ public class KmeansAlgorithm {
 	}
 
 	public double getSilhouetteAgrupamiento() {
+		
 		double shilhouette = 0;
 		int i = 0;
 		Iterator<Cluster> it = resultado.iterator();
+		
 		while (it.hasNext()) {
+			
 			Cluster c = it.next();
 			Iterator<Instancia> it2 = c.getInstancias().getIterator();
+			
 			while (it2.hasNext()) {
+				
 				Instancia inst = it2.next();
 				i = i + 1;
 				shilhouette = shilhouette + this.getSilhouette(inst, c);
 			}
 		}
+		
 		return shilhouette / i;
 	}
 
@@ -231,6 +244,8 @@ public class KmeansAlgorithm {
 		return DataBase.getDataBase().getRandomVector();
 	}
 
+	
+	
 	private void asignarVectorDivisionClusters() {
 		// vamos a dividir las instancias en tantos grupos como clusters haya
 		// el orden de la división será segun viene en el .arff
@@ -248,11 +263,14 @@ public class KmeansAlgorithm {
 		}
 	}
 
+	
 	private Cluster getClusterMasCercano(Cluster pCluster) {
+		
 		Iterator<Cluster> it = resultado.iterator();
 		double min = Integer.MAX_VALUE;
 		double dis = 0;
 		Cluster resultado = null;
+		
 		while (it.hasNext()) {
 			Cluster x = it.next();
 			if (!x.equals(pCluster)) {
@@ -263,9 +281,11 @@ public class KmeansAlgorithm {
 				}
 			}
 		}
+		
 		return resultado;
 	}
 
+	
 	private Cluster getClusterMasDistante(Cluster pCluster) {
 		Iterator<Cluster> it = resultado.iterator();
 		ArrayList<Double> distancias = new ArrayList<Double>();
@@ -291,17 +311,6 @@ public class KmeansAlgorithm {
 		return resultado;
 	}
 
-	private double getSeparacion(Cluster pCluster, Instancia pInstancia) {
-		int i = 0;
-		double resultado = 0;
-		Cluster masCercano = getClusterMasCercano(pCluster);
-		Iterator<Instancia> it = masCercano.getInstancias().getIterator();
-		while (it.hasNext()) {
-			resultado = resultado + it.next().getDistanceTo(pInstancia.getLista());
-			i = i + 1;
-		}
-		return resultado / i;
-	}
 
 	private Instancia getVectorAleatorioDivision(int k2, int i) {
 		// TODO Auto-generated method stub

@@ -250,25 +250,18 @@ public class KmeansAlgorithm {
 
 	private Cluster getClusterMasCercano(Cluster pCluster) {
 		Iterator<Cluster> it = resultado.iterator();
-		ArrayList<Double> distancias = new ArrayList<Double>();
-		ArrayList<Cluster> clusters = new ArrayList<Cluster>();
+		double min = Integer.MAX_VALUE;
+		double dis = 0;
 		Cluster resultado = null;
-		int i = 0;
-		Double comp;
 		while (it.hasNext()) {
 			Cluster x = it.next();
 			if (!x.equals(pCluster)) {
-				distancias.add(pCluster.getVector().getDistanceTo(x.getVector().getLista()));
-				clusters.add(x);
+				dis = pCluster.getVector().getDistanceTo(x.getVector().getLista());
+				if(dis < min){
+					resultado = x;
+					min = dis;
+				}
 			}
-		}
-		comp = distancias.get(0);
-		for (Double dis : distancias) {
-			if (comp >= dis) {
-				comp = dis;
-				resultado = clusters.get(i);
-			}
-			i = i + 1;
 		}
 		return resultado;
 	}

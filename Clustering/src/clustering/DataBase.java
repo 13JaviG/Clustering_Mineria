@@ -43,8 +43,8 @@ public class DataBase {
 		try {
 			// leemos el fichero arff
 			reader = new BufferedReader(new FileReader(
-					// "C:/Users/Frank/git/Clustering_Mineria/Clustering/src/arffFiles/diabetestfidf.arff"
-					"C:/Users/User/git/Clustering_Mineria/Clustering/src/arffFiles/diabetestfidf.arff"));
+					"C:/Users/Frank/git/Clustering_Mineria/Clustering/src/arffFiles/autopsiaTFIDF.arff"));
+			// "C:/Users/User/git/Clustering_Mineria/Clustering/src/arffFiles/diabetestfidf.arff"));
 			ArffReader arff = new ArffReader(reader);
 			// obtenemos las instancias
 			Instances data = arff.getData();

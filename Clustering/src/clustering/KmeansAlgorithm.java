@@ -15,7 +15,7 @@ public class KmeansAlgorithm {
 	 */
 	private final String				inicializacion;
 	private final int					iteraciones;
-	private double						umbral;
+	private final double				umbral;
 	private final ArrayList<Cluster>	resultado;
 
 	/**
@@ -33,6 +33,7 @@ public class KmeansAlgorithm {
 		inicializacion = pInic;
 		iteraciones = pIter;
 		resultado = new ArrayList<Cluster>();
+		umbral = pUmbr;
 	}
 
 	public void asignarInstancia(Instancia pInst) {
@@ -114,9 +115,14 @@ public class KmeansAlgorithm {
 			asignarInstanciasClusters();
 			double dist = this.resultado.get(0).calcularDistancia(list1);
 			System.out.println("Distancia iteración No" + i + ":  " + dist);
-
+			if (dist <= umbral) {
+				break;
+			}
 			i++;
 		}
+		System.out.println("***********************************");
+		System.out.println("***********************************");
+		System.out.println("Instancias totales de la muestra: " + DataBase.getDataBase().getInstancias().size());
 		Iterator<Cluster> it = this.resultado.iterator();
 		while (it.hasNext()) {
 			it.next().printCluster();
@@ -201,6 +207,31 @@ public class KmeansAlgorithm {
 		comp = distancias.get(0);
 		for (Double dis : distancias) {
 			if (comp >= dis) {
+				comp = dis;
+				resultado = clusters.get(i);
+			}
+			i = i + 1;
+		}
+		return resultado;
+	}
+
+	private Cluster getClusterMasDistante(Cluster pCluster) {
+		Iterator<Cluster> it = resultado.iterator();
+		ArrayList<Double> distancias = new ArrayList<Double>();
+		ArrayList<Cluster> clusters = new ArrayList<Cluster>();
+		Cluster resultado = null;
+		int i = 0;
+		Double comp;
+		while (it.hasNext()) {
+			Cluster x = it.next();
+			if (!x.equals(pCluster)) {
+				distancias.add(pCluster.getVector().getDistanceTo(x.getVector().getLista()));
+				clusters.add(x);
+			}
+		}
+		comp = distancias.get(0);
+		for (Double dis : distancias) {
+			if (comp <= dis) {
 				comp = dis;
 				resultado = clusters.get(i);
 			}

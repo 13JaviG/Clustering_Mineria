@@ -39,6 +39,7 @@ public class ListaInstancias {
 
 	public Instancia getRandomVector() {
 		Random rand = new Random();
+		System.out.println("size" + lista.size());
 		int n = rand.nextInt(lista.size() - 1);
 		Instancia aleatorio = new Instancia(n, lista.get(n).getLista());
 		return aleatorio;

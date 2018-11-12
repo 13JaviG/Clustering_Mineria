@@ -25,10 +25,7 @@ public class Cluster {
 	public double calcularDistancia(ArrayList<String> pVector) {
 		return distancia = this.clusterVector.getDistanceTo(pVector);
 	}
-	
-	public Instancia getVector() {
-		return this.clusterVector;
-	}
+
 	/**
 	 *
 	 * @param pInstancia
@@ -46,9 +43,32 @@ public class Cluster {
 		return this.clusterVector.getLista();
 	}
 
+	public double getCohexion(Instancia pInstancia) {
+		// metodo que devuelve la cohexion de un cluster
+		double resultado = 0;
+		int i = 0;
+		Iterator<Instancia> it = instancias.getIterator();
+		while (it.hasNext()) {
+			resultado = resultado + getDistancia(it.next(), pInstancia);
+			i = i + 1;
+		}
+		// promedio de la suma de todas las distancias de un punto a todos los
+		// puntos
+		// de un mismo cluster
+		return resultado / (i - 1);
+	}
+
+	public ListaInstancias getInstancias() {
+		return this.instancias;
+	}
+
 	public Instancia getPuntoMedio() {
 		// TODO - implement Cluster.getPuntoMedio
 		throw new UnsupportedOperationException();
+	}
+
+	public Instancia getVector() {
+		return this.clusterVector;
 	}
 
 	public void printCentroide() {
@@ -63,9 +83,9 @@ public class Cluster {
 		System.out.println("***********************************");
 		System.out.println("***Instancias del cluster***" + this.instancias.getInstancias().size());
 		System.out.println("***********************************");
-		this.instancias.print();
-		System.out.println("***********************************");
-		System.out.println("***********************************");
+		// this.instancias.print();
+		// System.out.println("***********************************");
+		// System.out.println("***********************************");
 	}
 
 	public void recalcularCentroide() {
@@ -86,6 +106,11 @@ public class Cluster {
 		this.instancias = new ListaInstancias();
 	}
 
+	private double getDistancia(Instancia inst1, Instancia inst2) {
+		// metodo que devuelve distancia entre dos instancias
+		return inst1.getDistanceTo(inst2.getLista());
+	}
+
 	private ArrayList<String> mediaVectores(ArrayList<String> sumaVectores, int size) {
 		ArrayList<String> nuevo = new ArrayList<String>();
 		Iterator<String> it = sumaVectores.iterator();
@@ -104,29 +129,6 @@ public class Cluster {
 			nuevo.add(Double.toString(value));
 		}
 		return nuevo;
-	}
-	
-	public ListaInstancias getInstancias(){
-		return this.instancias;
-	}
-	
-	public double getCohexion(Instancia pInstancia) {
-		//metodo que devuelve la cohexion de un cluster
-		double resultado = 0;
-		int i = 0;
-		Iterator<Instancia> it = instancias.getIterator();
-		while (it.hasNext()) {
-				resultado = resultado + getDistancia(it.next(), pInstancia);
-				i=i+1;
-		}		
-		//promedio de la suma de todas las distancias de un punto a todos los puntos 
-		//de un mismo cluster
-		return resultado/(i-1);
-	}
-
-	private double getDistancia(Instancia inst1, Instancia inst2) {
-		//metodo que devuelve distancia entre dos instancias
-		return inst1.getDistanceTo(inst2.getLista());
 	}
 
 }

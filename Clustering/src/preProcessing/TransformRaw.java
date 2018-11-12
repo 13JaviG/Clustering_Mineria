@@ -6,7 +6,7 @@ import utilities.CommonUtilities;
 import java.io.File;
 
 import weka.core.Instances;
-import weka.core.tokenizers.WordTokenizer;
+import weka.core.tokenizers.AlphabeticTokenizer;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.*;
 import weka.filters.unsupervised.instance.SparseToNonSparse;
@@ -42,13 +42,11 @@ public class TransformRaw {
 			 * Transformamos el arff raw a TF-IDF 
 			 */
 			filter = new StringToWordVector();
-			
 			//Indicamos que tiene que pasar a minï¿½sculas todas las letras del texto
 			filter.setLowerCaseTokens(true);		
 			
 			//Creamos un Tokenizer y le indicamos quï¿½ sï¿½mbolos tiene que excluir
-			WordTokenizer tokenizer = new WordTokenizer();
-			tokenizer.setDelimiters("\r\t\n .,;:\'\"()?¿!¡¬-><#$€%&*+/@^_=[]{}|\\`~0123456789");
+			AlphabeticTokenizer tokenizer = new AlphabeticTokenizer();
 			filter.setTokenizer(tokenizer);	
 					
 			filter.setTFTransform(true);

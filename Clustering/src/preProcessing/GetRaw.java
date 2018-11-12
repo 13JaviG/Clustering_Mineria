@@ -20,7 +20,7 @@ public class GetRaw {
 	/**
 	 * Crea un archivo arff a partir de un directorio de ficheros (raw).
 	 *
-	 * @param args  Parámetros de entrada. En caso de no introducir ninguno se muestra una descripción de estos.
+	 * @param args  Parï¿½metros de entrada. En caso de no introducir ninguno se muestra una descripciï¿½n de estos.
 	 */
 	public static void main(String[] args) throws IOException {
 
@@ -38,18 +38,18 @@ public class GetRaw {
             getRawPlain(pathIn, pathOut);
         }else if (args.length == 0) {
             System.out.println("=====Get Raw=====");
-            System.out.println("Este programa tiene como función obtener un fichero .arff para su uso en minería de datos " +
+            System.out.println("Este programa tiene como funciï¿½n obtener un fichero .arff para su uso en minerï¿½a de datos " +
                     "a partir de diversos tipos de archivos.");
             System.out.println("Este programa necesita que introduzcas 3 argumentos para funcionar correctamente.");
-            System.out.println("PRECONDICIONES:\nEl primer argumento será el tipo de archivo de entrada. El segundo " +
-                    "argumento será el path del fichero o directorio a convertir. El tercero es el path del fichero de salida.");
-            System.out.println("POSTCONDICIONES:\nEl resultado de esta aplicación será la creación de un fichero .arff " +
+            System.out.println("PRECONDICIONES:\nEl primer argumento serï¿½ el tipo de archivo de entrada. El segundo " +
+                    "argumento serï¿½ el path del fichero o directorio a convertir. El tercero es el path del fichero de salida.");
+            System.out.println("POSTCONDICIONES:\nEl resultado de esta aplicaciï¿½n serï¿½ la creaciï¿½n de un fichero .arff " +
                     "en el path especificado en los argumentos\n");
-            System.out.println("Lista de argumentos:\n--Opción para el input:\n   -d\tLa estructura de los ficheros es por directorios." +
-                    "\n   -c\tEl fichero está en formato CSV.\n   -p\tEl fichero está en texto plano.\n" +
-                    "-- Path de la raíz del fichero o árbol de directorios a convertir." +
-                    "\n-- Path del destino donde se guardará el fichero resultante tras la ejecución");
-            System.out.println("Ejemplo de una correcta ejecución: java -jar getRaw.jar -d /path/to/file /path/to/newAfrff.arff");
+            System.out.println("Lista de argumentos:\n--Opciï¿½n para el input:\n   -d\tLa estructura de los ficheros es por directorios." +
+                    "\n   -c\tEl fichero estï¿½ en formato CSV.\n   -p\tEl fichero estï¿½ en texto plano.\n" +
+                    "-- Path de la raï¿½z del fichero o ï¿½rbol de directorios a convertir." +
+                    "\n-- Path del destino donde se guardarï¿½ el fichero resultante tras la ejecuciï¿½n");
+            System.out.println("Ejemplo de una correcta ejecuciï¿½n: java -jar getRaw.jar -d /path/to/file /path/to/newAfrff.arff");
             System.exit(0);
         }else{
             CommonUtilities.printlnError("Error en el input. Revise su sintaxis.");
@@ -59,10 +59,10 @@ public class GetRaw {
     }
 
 	/**
-     * Este método crea un archivo arff en la ruta pathOut a partir de los archivos de texto plano ubicados en el árbol
-     * de directorios de la ruta pathIn. Las carpetas de este árbol serán la clase asignada.
+     * Este mï¿½todo crea un archivo arff en la ruta pathOut a partir de los archivos de texto plano ubicados en el ï¿½rbol
+     * de directorios de la ruta pathIn. Las carpetas de este ï¿½rbol serï¿½n la clase asignada.
      *
-     * @param pathIn        Ruta en la que está ubicado el directorio de archivos de texto plano.
+     * @param pathIn        Ruta en la que estï¿½ ubicado el directorio de archivos de texto plano.
      * @param pathOut       Ruta en la que se crea el nuevo archivo arff,
      */
     private static void getRawDirectory (String pathIn, String pathOut) throws IOException {
@@ -71,22 +71,22 @@ public class GetRaw {
         loader.setDirectory(new File(pathIn));
         Instances instances = loader.getDataSet();
 
-        //Renombramos la relación y definimos el índice de la clase
+        //Renombramos la relaciï¿½n y definimos el ï¿½ndice de la clase
         instances.setRelationName("MOVIES");
         instances.setClassIndex(instances.numAttributes()-1);
 
-        //Creación del archivo arff.
+        //Creaciï¿½n del archivo arff.
         CommonUtilities.saveArff(instances, pathOut);
     }
 
     /**
-     * Este método crea un archivo arff en la ruta pathOut a partir del archivo CSV que ubicado en la ruta pathIn.
+     * Este mï¿½todo crea un archivo arff en la ruta pathOut a partir del archivo CSV que ubicado en la ruta pathIn.
      *
-     * @param pathIn    Ruta en la que está ubicado el directorio de archivos raw.
+     * @param pathIn    Ruta en la que estï¿½ ubicado el directorio de archivos raw.
      * @param pathOut   Ruta en la que se crea el nuevo archivo arff,
      */
     private static void getRawCSV (String pathIn, String pathOut){
-        //Este método está personalizado para el archivo de pruebas "Tweets", por lo que no es útil con otros archivos.
+        //Este mï¿½todo estï¿½ personalizado para el archivo de pruebas "Tweets", por lo que no es ï¿½til con otros archivos.
         try{
             int classIndex = 1;
             int tweetIndex = 4;
@@ -95,7 +95,7 @@ public class GetRaw {
             loader.setSource(new File(tmpCSV));
             Instances instances = loader.getDataSet();
             instances.setClassIndex(classIndex);
-            Files.delete(Paths.get(tmpCSV));
+            //Files.delete(Paths.get(tmpCSV));
 
 
             //Damos forma a las instancias
@@ -103,7 +103,7 @@ public class GetRaw {
             instances.renameAttribute(classIndex, "@@class@@");//Atributo de la clase.
             instances.renameAttribute(tweetIndex, "tweet");//Atributo en el que se encuentra texto del tweet.
 
-            //Eliminamos atributos que no aportan información.
+            //Eliminamos atributos que no aportan informaciï¿½n.
             Remove remove = new Remove();
             remove.setAttributeIndicesArray(new int[]{0, 2, 3});
             remove.setInputFormat(instances);
@@ -115,13 +115,13 @@ public class GetRaw {
             stringFilter.setInputFormat(instances);
             instances = Filter.useFilter(instances, stringFilter);
 
-            //Hacemos que la clase sea el último atributo
+            //Hacemos que la clase sea el ï¿½ltimo atributo
             Reorder reorderFilter = new Reorder();
             reorderFilter.setInputFormat(instances);
             reorderFilter.setOptions(new String[]{"-R","2-last,1"});
             instances = Filter.useFilter(instances, reorderFilter);
 
-            //Renombramos la relación y definimos el índice de la clase
+            //Renombramos la relaciï¿½n y definimos el ï¿½ndice de la clase
             instances.setRelationName("TWEETS");
             instances.setClassIndex(instances.numAttributes()-1);
 
@@ -132,9 +132,9 @@ public class GetRaw {
     }
 
     /**
-     * Este método crea un archivo arff en la ruta pathOut a partir del archivo de texto plano ubicado en la ruta pathIn.
+     * Este mï¿½todo crea un archivo arff en la ruta pathOut a partir del archivo de texto plano ubicado en la ruta pathIn.
      *
-     * @param pathIn        Ruta en la que está ubicado el archivo de texto plano.
+     * @param pathIn        Ruta en la que estï¿½ ubicado el archivo de texto plano.
      * @param pathOut       Ruta en la que se crea el nuevo archivo arff,
      */
     private static void getRawPlain (String pathIn, String pathOut) throws IOException{
@@ -159,11 +159,11 @@ public class GetRaw {
     }
 
     /**
-     * Este método limpia y corrige el contenido corrupto de un fichero CSV y guarda el resultado en un nuevo archivo
+     * Este mï¿½todo limpia y corrige el contenido corrupto de un fichero CSV y guarda el resultado en un nuevo archivo
      * ubicado en el directorio original. Devuelve el path del nuevo archivo creado.
      *
-     * @param path  Ruta en la que está ubicado el fichero CSV que se desea limpiar.
-     * @return      Ruta en la que está ubicado el nuevo fichero CSV limpiado.
+     * @param path  Ruta en la que estï¿½ ubicado el fichero CSV que se desea limpiar.
+     * @return      Ruta en la que estï¿½ ubicado el nuevo fichero CSV limpiado.
      */
     private static String parseCSV (String path){
         String newPath = path + ".tmp";
@@ -204,7 +204,7 @@ public class GetRaw {
     }
 
     /**
-     * Este método lee los valores que contiene una linea de texto en formato CSV y los devuelve como un array de datos
+     * Este mï¿½todo lee los valores que contiene una linea de texto en formato CSV y los devuelve como un array de datos
      * en formato String.
      *
      * @param line  Linea en formato CSV de la que se quieren leer los datos.

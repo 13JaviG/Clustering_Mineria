@@ -1,5 +1,6 @@
 package preProcessing;
 
+
 import utilities.CommonUtilities;
 
 import java.io.File;
@@ -16,8 +17,9 @@ public class TransformRaw {
 	 * Transforma el espacio de atributos del conjunto de entrenamiento a TF-IDF Sparse.
 	 * args[0]: es el path donde se encuentra el Raw a transformar.
 	 * args[1]: es el path donde vas a depositar el Raw ya transformado.
-	 * @param args Parámetros de entrada. 
+	 * @param args ParÃ¡metros de entrada. 
 	 */
+	
 	public static void main(String[] args) throws Exception {
 
 			String pathIn = "";
@@ -41,12 +43,12 @@ public class TransformRaw {
 			 */
 			filter = new StringToWordVector();
 			
-			//Indicamos que tiene que pasar a min�sculas todas las letras del texto
+			//Indicamos que tiene que pasar a minï¿½sculas todas las letras del texto
 			filter.setLowerCaseTokens(true);		
 			
-			//Creamos un Tokenizer y le indicamos qu� s�mbolos tiene que excluir
+			//Creamos un Tokenizer y le indicamos quï¿½ sï¿½mbolos tiene que excluir
 			WordTokenizer tokenizer = new WordTokenizer();
-			tokenizer.setDelimiters("\r\t\n .,;:\'\"()?�!��-><#$�%&*+/@^_=[]{}|\\`~0123456789");
+			tokenizer.setDelimiters("\r\t\n .,;:\'\"()?¿!¡¬-><#$€%&*+/@^_=[]{}|\\`~0123456789");
 			filter.setTokenizer(tokenizer);	
 					
 			filter.setTFTransform(true);
@@ -66,7 +68,7 @@ public class TransformRaw {
 			dataFiltered = Filter.useFilter(dataFiltered, sparseFilter);
 
 			/*
-			 * Hacemos que la clase sea el �ltimo atributo
+			 * Hacemos que la clase sea el ï¿½ltimo atributo
 			 */
 			Reorder reorderFilter = new Reorder();
 			reorderFilter.setInputFormat(dataFiltered);
@@ -75,7 +77,7 @@ public class TransformRaw {
 			dataFiltered.setClassIndex(dataFiltered.numAttributes()-1);
 
 			/*
-			 * Damos a la relaci�n su nombre original
+			 * Damos a la relaciï¿½n su nombre original
 			 */
 			dataFiltered.setRelationName(relationName);
 
@@ -83,6 +85,11 @@ public class TransformRaw {
 			 * guardamos los datos en el path especificado
 			 */
             CommonUtilities.saveArff(dataFiltered, pathOut);
+           
 		}
+
+
+
+
 
 	}

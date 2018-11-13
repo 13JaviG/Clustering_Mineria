@@ -51,9 +51,12 @@ public class Cluster {
 		Iterator<Instancia> it = instancias.getIterator();
 
 		while (it.hasNext()) {
-
-			resultado = resultado + getDistancia(it.next(), pInstancia, pTipoDistancia);
+			
+			Instancia act = it.next();
+			if(pInstancia.getNumInst()!=act.getNumInst()){
+			resultado = resultado + getDistancia(act, pInstancia, pTipoDistancia);
 			i = i + 1;
+			}
 		}
 		// promedio de la suma de todas las distancias de un punto a todos los
 		// puntos

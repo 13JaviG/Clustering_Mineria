@@ -187,31 +187,25 @@ public class KmeansAlgorithm {
 		double shilhouette = 0;
 		int i = 0;
 		Iterator<Cluster> it = resultado.iterator();
-
 		while (it.hasNext()) {
-
 			Cluster c = it.next();
-			// Iterator<Instancia> it2 = c.getInstancias().getIterator();
+			Iterator<Instancia> it2 = c.getInstancias().getIterator();			
+			while (it2.hasNext()) {				 
+				  Instancia inst = it2.next(); i = i + 1; double sh =
+				  this.getSilhouette(inst, c); System.out.println(sh);
+				  shilhouette = shilhouette + sh; //shilhouette = shilhouette +
+				  this.getSilhouette(inst, c);				 
+			}
 
 			// sillhouete con 10%
-			for (int j = 0; j < c.getInstancias().getInstancias().size() - 1; j++) {
+			/*for (int j = 0; j < c.getInstancias().getInstancias().size() - 1; j++) {
 				Instancia inst = c.getInstancias().getInstancias().get(j);
 				j = (int) (j + (c.getInstancias().getInstancias().size() - 1) * 0.1);
 				i = i + 1;
 				double sh = this.getSilhouette(inst, c);
 				System.out.println(sh);
 				shilhouette = shilhouette + sh;
-			}
-			/*
-			 * while (it2.hasNext()) {
-			 *
-			 * Instancia inst = it2.next(); i = i + 1; double sh =
-			 * this.getSilhouette(inst, c); System.out.println(sh); shilhouette
-			 * = shilhouette + sh; //shilhouette = shilhouette +
-			 * this.getSilhouette(inst, c);
-			 *
-			 * }
-			 */
+			}*/			 
 		}
 
 		return shilhouette / i;

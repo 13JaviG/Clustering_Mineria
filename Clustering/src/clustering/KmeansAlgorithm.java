@@ -250,6 +250,7 @@ public class KmeansAlgorithm {
 	 * @param pCluster
 	 * @return double
 	 */
+	
 	public double getSilhouette(Instancia pInstancia, Cluster pCluster) {
 		
 		double Silhouette = 0;
@@ -274,6 +275,8 @@ public class KmeansAlgorithm {
 	 * Método principal para realizar el Silhouette
 	 * @return double
 	 */
+	
+	
 	public double getSilhouetteAgrupamiento() {
 		
 		//Inicializaciones del método
@@ -312,6 +315,8 @@ public class KmeansAlgorithm {
 	 * @param pCluster
 	 * @return
 	 */
+	
+	
 	private Cluster getClusterMasCercano(Cluster pCluster) {
 
 		Iterator<Cluster> it = resultado.iterator();
@@ -332,6 +337,7 @@ public class KmeansAlgorithm {
 
 		return resultado;
 	}
+	
 	
 	
 	

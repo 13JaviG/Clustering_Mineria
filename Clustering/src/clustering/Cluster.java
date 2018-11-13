@@ -42,7 +42,8 @@ public class Cluster {
 	public ArrayList<String> getCentroide() {
 		return this.clusterVector.getLista();
 	}
-
+	
+	
 	public double getDistanciaMedia(Instancia pInstancia, String pTipoDistancia) {
 		// metodo que devuelve la cohexion de un cluster
 

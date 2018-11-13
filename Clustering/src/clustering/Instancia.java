@@ -32,7 +32,8 @@ public class Instancia {
 			Iterator<String> it1 = this.listaAtributos.iterator();
 			Iterator<String> it2 = pVector.iterator();
 			while (it1.hasNext() && it2.hasNext()) {
-				sum = sum + Math.pow(Double.parseDouble(it1.next()) - Double.parseDouble(it2.next()), minkowski);
+				sum = sum + Math.pow(Math.abs(Double.parseDouble(it1.next()) - Double.parseDouble(it2.next())),
+						minkowski);
 			}
 			double dist = Math.pow(sum, 1 / minkowski);
 			if (Double.isNaN(dist))
@@ -47,7 +48,8 @@ public class Instancia {
 			Iterator<String> it1 = this.listaAtributos.iterator();
 			Iterator<String> it2 = pVector.iterator();
 			while (it1.hasNext() && it2.hasNext()) {
-				sum = sum + Math.pow(Double.parseDouble(it1.next()) - Double.parseDouble(it2.next()), euclidea);
+				sum = sum
+						+ Math.pow(Math.abs(Double.parseDouble(it1.next()) - Double.parseDouble(it2.next())), euclidea);
 			}
 			double dist = Math.pow(sum, 1 / euclidea);
 			if (Double.isNaN(dist))
@@ -61,7 +63,8 @@ public class Instancia {
 			Iterator<String> it1 = this.listaAtributos.iterator();
 			Iterator<String> it2 = pVector.iterator();
 			while (it1.hasNext() && it2.hasNext()) {
-				sum = sum + Math.pow(Double.parseDouble(it1.next()) - Double.parseDouble(it2.next()), manhattan);
+				sum = sum + Math.pow(Math.abs(Double.parseDouble(it1.next()) - Double.parseDouble(it2.next())),
+						manhattan);
 			}
 			double dist = Math.pow(sum, 1 / manhattan);
 			if (Double.isNaN(dist))

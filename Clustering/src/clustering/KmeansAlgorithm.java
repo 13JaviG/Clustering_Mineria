@@ -146,11 +146,11 @@ public class KmeansAlgorithm {
 	private void imprimirClusters(){
 		
 		Iterator<Cluster> it = resultado.iterator();
-		
+		Cluster act;
 		while(it.hasNext()){
-			
-			it.next().printCentroide();
-			it.next().printCluster();
+			act = it.next();
+			act.printCentroide();
+			act.printCluster();
 		}
 	}
 	

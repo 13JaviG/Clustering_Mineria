@@ -10,9 +10,10 @@ public class MainClass {
 	}
 
 	public void ejecutar() {
-		kmeans = new KmeansAlgorithm(12, "singlelink", "aleatorio", 100, 0.00000000000000, "euclidea");
+		kmeans = new KmeansAlgorithm(2, "singlelink", "aleatorio", 100, 0.00000000000000, "euclidea");
 		kmeans.calcularKmeans();
-		System.out.println("Indicie de calidad interna Shilhouette :" + kmeans.getSilhouetteAgrupamiento());
+		System.out.println("////////////////////////////////////////////////////////////////////////////");
+		System.out.println("Shilhouette del agrupamiento total :" + kmeans.getSilhouetteAgrupamiento());
 
 	}
 

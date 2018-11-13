@@ -261,27 +261,38 @@ public class KmeansAlgorithm {
 		// Inicializaciones del método
 		double shilhouette = 0;
 		int i = 0;
+		@SuppressWarnings("unused")
+		int iporCluster = 0;
+		int ClusterID = 0;
+		double sumaPorCluster = 0;
 		Iterator<Cluster> it = resultado.iterator();
+		
+		System.out.println("////////////////////////////////////////////////////////////////////");
+		System.out.println("El Sillhouette es un indice de calidad interna que varia de -1 a 1");
+		System.out.println("Siendo -1 una mala clasificación y 1 una buena clasificación");
+		System.out.println("////////////////////////////////////////////////////////////////////");
+		
 		while (it.hasNext()) {
 			Cluster c = it.next();
+			ClusterID++;
+			iporCluster = 0;
+			sumaPorCluster = 0;
 			Iterator<Instancia> it2 = c.getInstancias().getIterator();
 			while (it2.hasNext()) {
 				Instancia inst = it2.next();
 				i = i + 1;
+				iporCluster++;
 				double sh = this.getSilhouette(inst, c);
-				System.out.println(sh);
-				shilhouette = shilhouette + sh; // shilhouette = shilhouette +
+				shilhouette = shilhouette + sh;
+				sumaPorCluster = sumaPorCluster + sh;
 				this.getSilhouette(inst, c);
 			}
+			
+			System.out.println("Cluster " + ClusterID + " :");
+			System.out.println("	Indice Sillhouette : " + sumaPorCluster/iporCluster);
+			System.out.println("	Número de Instancias : " + iporCluster);
+			System.out.println();
 
-			// sillhouete con 10%
-			/*
-			 * for (int j = 0; j < c.getInstancias().getInstancias().size() - 1;
-			 * j++) { Instancia inst = c.getInstancias().getInstancias().get(j);
-			 * j = (int) (j + (c.getInstancias().getInstancias().size() - 1) *
-			 * 0.1); i = i + 1; double sh = this.getSilhouette(inst, c);
-			 * System.out.println(sh); shilhouette = shilhouette + sh; }
-			 */
 		}
 
 		return shilhouette / i;

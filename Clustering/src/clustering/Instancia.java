@@ -27,24 +27,33 @@ public class Instancia {
 
 		if (pTipoDistancia == "minkowski") {
 			// utilizaremos la distancia minkowski de grado 7.5
-			double grado = 7.5;
+			double minkowski = 7.5;
 			double sum = 0;
 			Iterator<String> it1 = this.listaAtributos.iterator();
 			Iterator<String> it2 = pVector.iterator();
 			while (it1.hasNext() && it2.hasNext()) {
-				sum = sum + Math.pow(Double.parseDouble(it1.next()) - Double.parseDouble(it2.next()), grado);
+				sum = sum + Math.pow(Double.parseDouble(it1.next()) - Double.parseDouble(it2.next()), minkowski);
 			}
-			return Math.pow(sum, 1 / grado);
+			double dist = Math.pow(sum, 1 / minkowski);
+			if (Double.isNaN(dist))
+				return 0.0;
+			else
+				return dist;
+
 		} else if (pTipoDistancia == "euclidea") {
 			// utilizaremos la distancia euclidea de grado 2
-			// double euclidea = 2.0;
+			double euclidea = 2.0;
 			double sum = 0;
 			Iterator<String> it1 = this.listaAtributos.iterator();
 			Iterator<String> it2 = pVector.iterator();
 			while (it1.hasNext() && it2.hasNext()) {
-				sum = sum + Math.pow(Double.parseDouble(it1.next()) - Double.parseDouble(it2.next()), 2);
+				sum = sum + Math.pow(Double.parseDouble(it1.next()) - Double.parseDouble(it2.next()), euclidea);
 			}
-			return Math.pow(sum, 0.5);
+			double dist = Math.pow(sum, 1 / euclidea);
+			if (Double.isNaN(dist))
+				return 0.0;
+			else
+				return dist;
 		} else {
 			// utilizaremos la distancia manhattan de grado 1
 			double manhattan = 1.0;
@@ -54,7 +63,11 @@ public class Instancia {
 			while (it1.hasNext() && it2.hasNext()) {
 				sum = sum + Math.pow(Double.parseDouble(it1.next()) - Double.parseDouble(it2.next()), manhattan);
 			}
-			return Math.pow(sum, 1 / manhattan);
+			double dist = Math.pow(sum, 1 / manhattan);
+			if (Double.isNaN(dist))
+				return 0.0;
+			else
+				return dist;
 
 		}
 	}

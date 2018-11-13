@@ -121,11 +121,23 @@ public class KmeansAlgorithm {
 		this.resultado.get(1).printCluster();
 		int i = 0;
 		while (i < iteraciones) {
-			ArrayList<String> list1 = this.resultado.get(0).getCentroide();
+			int j = 0;
+			Centroides oldCentroides = new Centroides();
+			while (j < this.resultado.size()) {
+				oldCentroides.add(this.resultado.get(j).getCentroide());
+				j++;
+			}
 			recalcularCetroides();
 			asignarInstanciasClusters();
-			double dist = this.resultado.get(0).calcularDistancia(list1, tipoDistancia);
-			System.out.println("Distancia iteración No" + i + ":  " + dist);
+			double dist = this.resultado.get(0).calcularDistancia(oldCentroides.get(0), tipoDistancia);
+			System.out.print("dist " + dist);
+			int z = 0;
+			while (z < this.resultado.size()) {
+				dist = dist + this.resultado.get(z).calcularDistancia(oldCentroides.get(z), tipoDistancia);
+				z++;
+			}
+			dist = dist / resultado.size();
+			System.out.println("Distancia iteración No" + i + ":  " + dist / resultado.size());
 			if (dist <= umbral) {
 				break;
 			}
@@ -189,23 +201,24 @@ public class KmeansAlgorithm {
 		Iterator<Cluster> it = resultado.iterator();
 		while (it.hasNext()) {
 			Cluster c = it.next();
-			Iterator<Instancia> it2 = c.getInstancias().getIterator();			
-			while (it2.hasNext()) {				 
-				  Instancia inst = it2.next(); i = i + 1; double sh =
-				  this.getSilhouette(inst, c); System.out.println(sh);
-				  shilhouette = shilhouette + sh; //shilhouette = shilhouette +
-				  this.getSilhouette(inst, c);				 
-			}
-
-			// sillhouete con 10%
-			/*for (int j = 0; j < c.getInstancias().getInstancias().size() - 1; j++) {
-				Instancia inst = c.getInstancias().getInstancias().get(j);
-				j = (int) (j + (c.getInstancias().getInstancias().size() - 1) * 0.1);
+			Iterator<Instancia> it2 = c.getInstancias().getIterator();
+			while (it2.hasNext()) {
+				Instancia inst = it2.next();
 				i = i + 1;
 				double sh = this.getSilhouette(inst, c);
 				System.out.println(sh);
-				shilhouette = shilhouette + sh;
-			}*/			 
+				shilhouette = shilhouette + sh; // shilhouette = shilhouette +
+				this.getSilhouette(inst, c);
+			}
+
+			// sillhouete con 10%
+			/*
+			 * for (int j = 0; j < c.getInstancias().getInstancias().size() - 1;
+			 * j++) { Instancia inst = c.getInstancias().getInstancias().get(j);
+			 * j = (int) (j + (c.getInstancias().getInstancias().size() - 1) *
+			 * 0.1); i = i + 1; double sh = this.getSilhouette(inst, c);
+			 * System.out.println(sh); shilhouette = shilhouette + sh; }
+			 */
 		}
 
 		return shilhouette / i;

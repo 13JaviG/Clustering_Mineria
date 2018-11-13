@@ -37,14 +37,14 @@ public class Instancia {
 			return Math.pow(sum, 1 / grado);
 		} else if (pTipoDistancia == "euclidea") {
 			// utilizaremos la distancia euclidea de grado 2
-			double euclidea = 2.0;
+			// double euclidea = 2.0;
 			double sum = 0;
 			Iterator<String> it1 = this.listaAtributos.iterator();
 			Iterator<String> it2 = pVector.iterator();
 			while (it1.hasNext() && it2.hasNext()) {
-				sum = sum + Math.pow(Double.parseDouble(it1.next()) - Double.parseDouble(it2.next()), euclidea);
+				sum = sum + Math.pow(Double.parseDouble(it1.next()) - Double.parseDouble(it2.next()), 2);
 			}
-			return Math.pow(sum, 1 / euclidea);
+			return Math.pow(sum, 0.5);
 		} else {
 			// utilizaremos la distancia manhattan de grado 1
 			double manhattan = 1.0;

@@ -102,6 +102,8 @@ public class KmeansAlgorithm {
 				i++;
 			}
 		}
+		asignarKClustersMasAlejados(recalcular2KClusters());
+		
 	}
 
 	/**
@@ -208,17 +210,7 @@ public class KmeansAlgorithm {
 		throw new UnsupportedOperationException();
 	}
 
-	public ArrayList<Cluster> getKClustersMasAlejados(ArrayList<Cluster> pClusters) {
-		/////////////////////// falta partir el metodo grande y seguir con el
-		/////////////////////// calculo
-		/////////////////////// los 2 primeros clusters hechos bien falta seguir
-		/////////////////////// en funcion de ellos
-		/////////////////////////////////////////////////////////////////
-		/////////////////////////////////////////////////////////////////
-		/////////////////////////////////////////////////////////////////
-		/////////////////////////////////////////////////////////////////
-		return null;
-	}
+	
 
 	/**
 	 * Método para calcular el Silhouette
@@ -325,54 +317,128 @@ public class KmeansAlgorithm {
 	 * @param pClusters
 	 * @return
 	 */
-	public ArrayList<Cluster> recalcular2KClusters(ArrayList<Cluster> pClusters) {
+	public ArrayList<Cluster> recalcular2KClusters() {
 
-		int filycol = pClusters.size();
-		float[][] matriz = new float[filycol][filycol];
+		int filycol = resultado.size();
+		double[][] matriz = new double[filycol][filycol];
 		int i = 0;
 		int j = 0;
 		ArrayList<Cluster> Clusters = new ArrayList<Cluster>();
-		Iterator<Cluster> it = pClusters.iterator();
-		Iterator<Cluster> it2 = pClusters.iterator();
+		Iterator<Cluster> it = resultado.iterator();
+		
 
 		while (it.hasNext()) {
 
 			Cluster c = it.next();
-
+			Iterator<Cluster> it2 = resultado.iterator();
 			while (it2.hasNext()) {
-
+				Cluster c2 = it2.next();
 				// if(matriz[i][j]!=null)
-				float dis = (float) c.getVector().getDistanceTo(it2.next().getVector().getLista(), tipoDistancia);
+				double dis = (double) c.getVector().getDistanceTo(c2.getVector().getLista(), tipoDistancia);
 				matriz[i][j] = dis;
 				// matriz[j][i] = dis;
 				j = j + 1;
 			}
 			i = i + 1;
+			j = 0;
 		}
 
 		i = j = 0;
 		int idef = 0;
 		int jdef = 0;
-		float disdef = 0;
+		double disdef = Double.MIN_VALUE;
 
-		while (i <= filycol) {
-			while (j <= filycol) {
+		while (i < filycol) {
+			while (j < filycol) {
 
 				if (matriz[i][j] > disdef) {
 					idef = i;
 					jdef = j;
-					disdef = matriz[i][j];
+					disdef = (double) matriz[i][j];
 				}
 				j++;
 			}
 			i++;
 		}
 
-		Clusters.add(pClusters.get(idef));
-		Clusters.add(pClusters.get(jdef));
+		Clusters.add(resultado.get(idef));
+		Clusters.add(resultado.get(jdef));
 		return Clusters;
 	}
-
+	
+	
+	public void asignarKClustersMasAlejados(ArrayList<Cluster> pClusters) {
+		while (pClusters.size()<k){
+			Iterator<Cluster> it = resultado.iterator();
+			Iterator<Cluster> it2 = resultado.iterator();
+			Iterator<Cluster> it3 = pClusters.iterator();
+			int i = 0;
+			int j = 0;
+			int index = 0;
+			double[][] matriz = new double[resultado.size()][resultado.size()];
+			double dis = 0;
+			while (it.hasNext()){
+				Cluster c = it.next();
+				if(!pClusters.contains(c)){
+					while(it2.hasNext()){
+						Cluster c2 = it2.next();
+						if(pClusters.contains(c2)){
+							ArrayList<Double> aDis = new ArrayList<Double>();
+							while(it3.hasNext()){
+								Cluster c3 = it3.next();
+								aDis.add(c.getVector().getDistanceTo(c3.getVector().getLista(), tipoDistancia));
+							}
+							matriz[i][j] = getMinimo(aDis);
+						}else{
+							matriz[i][j] = c.getVector().getDistanceTo(c2.getVector().getLista(), tipoDistancia);
+						}
+						j++;
+					}
+					i++;
+				}				
+			}
+			dis = matriz[0][0];
+			i=j=0;
+			while(i<resultado.size()){
+				while(j<resultado.size()){
+					if(dis<matriz[i][j]){
+						dis = matriz[i][j];
+						index = i;
+					}
+					j++;
+				}
+				i++;
+			}
+			pClusters.add(resultado.get(index));
+		}
+		reasignarResultado(pClusters);
+	}
+	
+	public void reasignarResultado(ArrayList<Cluster> pClusters){
+	/*	for(Cluster tmp : resultado){
+			if(!pClusters.contains(tmp)){
+				resultado.remove(tmp);
+			}
+		}*/
+		for(int i = 0; i<resultado.size(); i++){
+			if(!pClusters.contains(resultado.get(i))){
+				resultado.remove(resultado.get(i));
+			}
+		}
+	}
+	
+	public double getMinimo(ArrayList<Double> pArray){
+			double min = Double.MAX_VALUE;
+			
+			for (Double tmp : pArray){
+				if(tmp < min){
+					min = tmp;
+				}
+			}
+			
+			return min;
+	}
+	
 	/**
 	 * Asigna vectores en la variación de División del K-Means
 	 */

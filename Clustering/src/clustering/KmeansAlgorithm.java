@@ -153,11 +153,7 @@ public class KmeansAlgorithm {
 			act.printCluster();
 		}
 	}
-	
-	
 
-	
-	
 	/**
 	 * Inicializa los centroides iniciales
 	 */
@@ -255,19 +251,23 @@ public class KmeansAlgorithm {
 	 * @return double
 	 */
 	public double getSilhouette(Instancia pInstancia, Cluster pCluster) {
-
+		
+		double Silhouette = 0;
 		// Calculamos la cohesión
 		double cohexion = pCluster.getDistanciaMedia(pInstancia, tipoDistancia);
-
+		
 		// Calculamos la separación
 		Cluster masCercano = getClusterMasCercano(pCluster);
 		double separacion = masCercano.getDistanciaMedia(pInstancia, tipoDistancia);
-
-		// Comparamos la cohesión y la separación
+		
 		if (cohexion >= separacion)
-			return (separacion - cohexion) / cohexion;
+			Silhouette = (separacion - cohexion) / cohexion;
 		else
-			return (separacion - cohexion) / separacion;
+			Silhouette = (separacion - cohexion) / separacion;
+		if (Double.isNaN(Silhouette))
+			Silhouette = 0.0;	
+		// Comparamos la cohesión y la separación
+		return Silhouette;
 	}
 	
 	/**

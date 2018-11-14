@@ -3,12 +3,21 @@ package clustering;
 import java.util.ArrayList;
 import java.util.Iterator;;
 
+/**
+ * clase que representa una istancia en el sistema
+ *
+ * @author Frank
+ *
+ */
+
 public class Instancia {
 
 	private ArrayList<String>	listaAtributos;
 	private final int			numInst;
 
 	/**
+	 * constructora de la clase -> pNumInst=posición de la instancia en el
+	 * fichero pListaAtr=valor de los atributos de la instancia
 	 *
 	 * @param pNumInst
 	 * @param plistaAtr
@@ -20,8 +29,11 @@ public class Instancia {
 	}
 
 	/**
+	 * devuelve la distancia de la instancia con otra(pVector), según el tipo de
+	 * distancia
 	 *
 	 * @param pVector
+	 * @param pTipoDistancia
 	 */
 	public double getDistanceTo(ArrayList<String> pVector, String pTipoDistancia) {
 
@@ -75,18 +87,36 @@ public class Instancia {
 		}
 	}
 
+	/**
+	 * devuelve el valor de la instancia-> sus atributos
+	 *
+	 * @return
+	 */
 	public ArrayList<String> getLista() {
 		return listaAtributos;
 	}
 
+	/**
+	 * devuelve la posición de la instancia en el fichero
+	 *
+	 * @return
+	 */
 	public int getNumInst() {
 		return this.numInst;
 	}
 
+	/**
+	 * escribe por pantalla el numero de instancia y sus atributos
+	 */
 	public void print() {
 		System.out.println(numInst + "- " + listaAtributos);
 	}
 
+	/**
+	 * modifica el valor de los atributos de la instancia
+	 * 
+	 * @param lista
+	 */
 	public void setLista(ArrayList<String> lista) {
 		listaAtributos = lista;
 	}

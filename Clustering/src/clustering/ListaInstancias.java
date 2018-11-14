@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
+/**
+ * clase que representa una lista de instancias
+ *
+ * @author Frank
+ *
+ */
 public class ListaInstancias {
 
 	private ArrayList<Instancia> lista;
@@ -13,6 +19,7 @@ public class ListaInstancias {
 	}
 
 	/**
+	 * añade una istancia a la lista
 	 *
 	 * @param pInst
 	 */
@@ -21,22 +28,28 @@ public class ListaInstancias {
 	}
 
 	/**
+	 * devuelve todas las instancias de lalista
 	 *
-	 * @param pPos
+	 * @return
 	 */
-	public void getInstancia(int pPos) {
-		// TODO - implement ListaInstancias.getInstancia
-		throw new UnsupportedOperationException();
-	}
-
 	public ArrayList<Instancia> getInstancias() {
 		return this.lista;
 	}
 
+	/**
+	 * devuelve el iterador de la lista
+	 *
+	 * @return
+	 */
 	public Iterator<Instancia> getIterator() {
 		return lista.iterator();
 	}
 
+	/**
+	 * devuelve una instancia aleatoria
+	 *
+	 * @return
+	 */
 	public Instancia getRandomVector() {
 		Random rand = new Random();
 		System.out.println("size" + lista.size());
@@ -45,6 +58,13 @@ public class ListaInstancias {
 		return aleatorio;
 	}
 
+	/**
+	 * devuelve una instancia aleatoria por división
+	 *
+	 * @param k2
+	 * @param i
+	 * @return
+	 */
 	public Instancia getRandomVectorDivision(int k2, int i) {
 		// k es el número de particiones(clusters)
 		// i será la partición correspondiente al cluster
@@ -63,6 +83,9 @@ public class ListaInstancias {
 		}
 	}
 
+	/**
+	 * escribe todas las instancias de la lista
+	 */
 	public void print() {
 		Iterator<Instancia> it = lista.iterator();
 		while (it.hasNext()) {
@@ -71,6 +94,9 @@ public class ListaInstancias {
 
 	}
 
+	/**
+	 * vacía todas las instancias de la lista
+	 */
 	public void vaciarLista() {
 		lista = new ArrayList<Instancia>();
 	}

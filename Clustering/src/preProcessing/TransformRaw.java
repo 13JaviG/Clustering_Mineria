@@ -64,18 +64,40 @@ public class TransformRaw {
 			SparseToNonSparse sparseFilter = new SparseToNonSparse();
 			sparseFilter.setInputFormat(dataFiltered);
 			dataFiltered = Filter.useFilter(dataFiltered, sparseFilter);
-
+			
 			/*
-			 * Hacemos que la clase sea el ï¿½ltimo atributo
+			 * Normalizamos los vectores
 			 */
+			Normalize NormalizeFilter = new Normalize();
+			NormalizeFilter.setInputFormat(dataFiltered);
+			dataFiltered = Filter.useFilter(dataFiltered, NormalizeFilter);
+			
+			
+			/*
+			 * Eliminamos Outliers
+			 */
+			InterquartileRange Outliersfilter = new InterquartileRange();
+			Outliersfilter.setInputFormat(dataFiltered);
+			dataFiltered = Filter.useFilter(dataFiltered, Outliersfilter);
+			
+			/*
+			 * Eliminamos atributos que varían muy poco
+			 */
+			RemoveUseless filtroUseless = new RemoveUseless();
+			filtroUseless.setInputFormat(dataFiltered);
+			dataFiltered = Filter.useFilter(dataFiltered, filtroUseless);
+			
+			/*
+			 * Hacemos que la clase sea el último atributo
+			 
 			Reorder reorderFilter = new Reorder();
 			reorderFilter.setInputFormat(dataFiltered);
 			reorderFilter.setOptions(new String[]{"-R","2-last,1"});
 			dataFiltered = Filter.useFilter(dataFiltered, reorderFilter);
-			dataFiltered.setClassIndex(dataFiltered.numAttributes()-1);
+			dataFiltered.setClassIndex(dataFiltered.numAttributes()-1);*/
 
 			/*
-			 * Damos a la relaciï¿½n su nombre original
+			 * Damos a la relación su nombre original
 			 */
 			dataFiltered.setRelationName(relationName);
 

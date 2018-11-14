@@ -6,10 +6,10 @@ public class Test {
 
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
-		String[] p = new String[3];
+		/*String[] p = new String[3];
 		p[2] = "TRUE";
-		p[0] = "C:/Users/olizy/Desktop/autopsiasv.csv";
-		p[1] = "C:/Users/olizy/Desktop/train.arff";
+		p[0] = "C:/Users/Javi/Desktop/autopsiasv.csv";
+		p[1] = "C:/Users/Javi/Desktop/train.arff";*/
 		
 		String[] o = new String[3];
 		o[0] = "-c";
@@ -20,11 +20,16 @@ public class Test {
 		String[] j = new String[2];
 		j[0] = "C:/Users/Javi/Desktop/train.arff";
 		j[1] = "C:/Users/Javi/Desktop/trainTFIDFAlphabetic.arff";
+		
+		String[] k = new String[2];
+		k[0] = "C:/Users/Javi/Desktop/trainTFIDFAlphabetic.arff";
+		k[1] = "C:/Users/Javi/Desktop/trainTFIDFAlphabetic.arff";
 
 		
 		//CSVtoArff.main(p);
 		GetRaw.main(o);
 		TransformRaw.main(j);
+		clusterData.clusterkmeans(k);
 	}
 
 }

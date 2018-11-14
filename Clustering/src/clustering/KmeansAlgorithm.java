@@ -3,6 +3,8 @@ package clustering;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import utilities.CommonUtilities;
+
 public class KmeansAlgorithm {
 	// número de clusters
 	private final int					k;
@@ -16,6 +18,8 @@ public class KmeansAlgorithm {
 	private final double				umbral;
 	private final ArrayList<Cluster>	resultado;
 	private final String				tipoDistancia;
+	private double silhouette;
+	
 
 	/**
 	 * Constructora para la clase
@@ -37,6 +41,7 @@ public class KmeansAlgorithm {
 		resultado = new ArrayList<Cluster>();
 		umbral = pUmbr;
 		tipoDistancia = pTipoDist;
+		silhouette = 0.00;
 	}
 	
 	
@@ -258,6 +263,7 @@ public class KmeansAlgorithm {
 		int iporCluster = 0;
 		int ClusterID = 0;
 		double sumaPorCluster = 0;
+		
 		Iterator<Cluster> it = resultado.iterator();
 		
 		System.out.println("////////////////////////////////////////////////////////////////////");
@@ -284,13 +290,14 @@ public class KmeansAlgorithm {
 				this.getSilhouette(inst, c);
 			}
 			
+			resultado.get(ClusterID-1).setSil(sumaPorCluster/iporCluster);
 			System.out.println("Cluster " + ClusterID + " :");
 			System.out.println("	Indice Sillhouette : " + sumaPorCluster/iporCluster);
 			System.out.println("	Número de Instancias : " + iporCluster);
 			System.out.println();
 
 		}
-
+		this.silhouette= shilhouette / i;
 		return shilhouette / i;
 	}
 	
@@ -382,7 +389,7 @@ public class KmeansAlgorithm {
 				i++;
 			}
 		}
-		asignarKClustersMasAlejados(recalcular2KClusters());
+		asignarKClustersMasAlejados();
 		
 	}
 	
@@ -391,8 +398,9 @@ public class KmeansAlgorithm {
 	 * Asigna los K clusters más alejados para el 2K
 	 * @param pClusters
 	 */
-	public void asignarKClustersMasAlejados(ArrayList<Cluster> pClusters) {
+	public void asignarKClustersMasAlejados() {
 		
+		ArrayList<Cluster> pClusters = new ArrayList<Cluster>();
 		while (pClusters.size()<k)
 		{
 			
@@ -480,61 +488,6 @@ public class KmeansAlgorithm {
 	
 	
 	
-	/**
-	 * Recalcula los Clusters en la variación 2K del K-Means
-	 *
-	 * @param pClusters
-	 * @return
-	 */
-	public ArrayList<Cluster> recalcular2KClusters() {
-
-		int filycol = resultado.size();
-		double[][] matriz = new double[filycol][filycol];
-		int i = 0;
-		int j = 0;
-		ArrayList<Cluster> Clusters = new ArrayList<Cluster>();
-		Iterator<Cluster> it = resultado.iterator();
-		
-
-		while (it.hasNext()) {
-
-			Cluster c = it.next();
-			Iterator<Cluster> it2 = resultado.iterator();
-			while (it2.hasNext()) {
-				Cluster c2 = it2.next();
-				// if(matriz[i][j]!=null)
-				double dis = (double) c.getVector().getDistanceTo(c2.getVector().getLista(), tipoDistancia);
-				matriz[i][j] = dis;
-				// matriz[j][i] = dis;
-				j = j + 1;
-			}
-			i = i + 1;
-			j = 0;
-		}
-
-		i = j = 0;
-		int idef = 0;
-		int jdef = 0;
-		double disdef = Double.MIN_VALUE;
-
-		while (i < filycol) {
-			while (j < filycol) {
-
-				if (matriz[i][j] > disdef) {
-					idef = i;
-					jdef = j;
-					disdef = (double) matriz[i][j];
-				}
-				j++;
-			}
-			i++;
-		}
-
-		Clusters.add(resultado.get(idef));
-		Clusters.add(resultado.get(jdef));
-		return Clusters;
-	}
-	
 	
 	/**
 	 * Elimina los clusters de resultado que no estén en pClusters
@@ -610,6 +563,12 @@ public class KmeansAlgorithm {
 			i = i + 1;
 		}
 		return resultado;
+	}
+
+	public void getResultados(String pathOut) {
+		
+		
+		CommonUtilities.getResultados(pathOut, resultado, silhouette);
 	}
 
 	

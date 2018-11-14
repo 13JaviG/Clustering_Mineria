@@ -100,4 +100,16 @@ public class ListaInstancias {
 	public void vaciarLista() {
 		lista = new ArrayList<Instancia>();
 	}
+	
+	public int getNumInstancia(int i){
+		return lista.get(i).getNumInst();
+	}
+	
+	public String atrInstancia(int i){
+		return lista.get(i).atrInstancia();
+	}
+	
+	public int size(){
+		return lista.size();
+	}
 }

@@ -111,7 +111,15 @@ public class Instancia {
 	public void print() {
 		System.out.println(numInst + "- " + listaAtributos);
 	}
-
+	
+	
+	public String datosInstancia(){
+		return (Integer.toString(numInst) + " - " + listaAtributos);
+	}
+	
+	public String atrInstancia(){
+		return ("- " + listaAtributos);
+	}
 	/**
 	 * modifica el valor de los atributos de la instancia
 	 * 

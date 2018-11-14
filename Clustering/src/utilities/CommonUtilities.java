@@ -9,7 +9,11 @@ import weka.core.converters.ArffSaver;
 import weka.core.converters.ConverterUtils;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
+
+import clustering.Cluster;
 
 public class CommonUtilities {
 
@@ -158,29 +162,59 @@ public class CommonUtilities {
         return minClassIndex;
     }
 
-	/**
-	 * Realiza una evaluaciÃ³n k-Fold Cross-Validation sobre el clasificador pClassifier con las instancias pIsntaces y
-	 * la seed pSeed, donde k es el nÃºmero de folds.
-	 *
-	 * @param classifier Clasificador a usar en la evaluaciÃ³n.
-	 * @param instances  Instancias que evaluar.
-	 * @param folds      NÃºmero de iteraciones a realizar.
-	 * @param seed       Seed para la randomizaciÃ³n.
-	 * @return 			 Objeto evaluation que contiene los resultados de la evaluaciÃ³n.
-	 */
-
-	public static Evaluation evalKFoldCrossValidation(Classifier classifier, Instances instances, int folds,
-													  long seed) {
-		Evaluation evaluation = null;
+	public static void getResultados(String pathOut, ArrayList<Cluster> clusters, double sil){
+		
 		try {
-			evaluation = new Evaluation(instances);
-			evaluation.crossValidateModel(classifier, instances, folds, new Random(seed));
-		} catch (Exception e) {
-			printlnError("ERROR AL EVALUAR EL CLASIFICADOR.");
+			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(new File(pathOut + "_quality.txt"))));
+			writer.println("==========================================================================================================");
+			writer.println("COORDENADAS DE LOS CENTROIDES:");
+			writer.println("==========================================================================================================");
+			writer.println("==========================================================================================================");
+			for(int i=0; i<clusters.size() ; i++){
+				writer.println("CENTROIDE DEL CLUSTER NÚMERO:	"+(i+1));
+				writer.println(clusters.get(i).printDatosCentroide());
+				writer.println("==========================================================================================================");
+			}
+			writer.println("==========================================================================================================");
+			writer.println("==========================================================================================================");
+			writer.println("      ");
+			writer.println("El Sillhouette es un indice de calidad interna que varia de -1 a 1");
+			writer.println("Siendo -1 una mala clasificación y 1 una buena clasificación");
+			writer.println("      ");
+			writer.println("==========================================================================================================");
+			
+			double silMedio = 0.00;
+			int i = 0;
+			for(i=0; i<clusters.size() ; i++){
+				writer.println("SILHOUETTE MEDIO DEL CLUSTER NÚMERO:	"+(i+1));
+				writer.println(Double.toString(clusters.get(i).getSil()));
+				silMedio = silMedio + clusters.get(i).getSil();
+				writer.println("==========================================================================================================");
+			}
+			silMedio = silMedio/i;
+			writer.println("           ");
+			writer.println("EL SILHOUETTE MEDIO POR CLUSTERS:	"+silMedio);
+			writer.println("           ");
+			writer.println("           ");
+			writer.println("EL SILHOUETTE MEDIO POR INSTANCIAS:	"+sil);
+			writer.println("           ");
+			writer.println("==========================================================================================================");
+			writer.println("INSTANCIAS:");
+			writer.println("           ");
+			i = 0;
+			for(i=0; i<clusters.size() ; i++){
+				for(int j=0; j<clusters.get(i).size() ; j++){
+				writer.println("Núm.Instancia:	"+clusters.get(i).getNumInstancia(j)+"	CLUSTER NÚMERO "+(i+1)+"	- "+clusters.get(i).getAtributosInstancia(j));
+				}
+			}
+			writer.println("==========================================================================================================");
+			writer.flush();
+			writer.close();
+		}catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-			System.exit(1);
 		}
-		return evaluation;
+		
 	}
 	
 	

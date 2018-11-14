@@ -14,6 +14,7 @@ public class Cluster {
 	private final Instancia	clusterVector;
 	private ListaInstancias	instancias;
 	private double			distancia;
+	private double silhouette;
 
 	public Cluster(Instancia pInst) {
 		clusterVector = pInst;
@@ -115,11 +116,15 @@ public class Cluster {
 		System.out.println("***********************************");
 		this.clusterVector.print();
 		System.out.println("***********************************");
-		System.out.println("***Instancias del cluster***" + this.instancias.getInstancias().size());
+		System.out.println("***Instancias del cluster:" + this.instancias.getInstancias().size());
 		System.out.println("***********************************");
 		// this.instancias.print();
 		// System.out.println("***********************************");
 		// System.out.println("***********************************");
+	}
+	
+	public String printDatosCentroide(){
+		return clusterVector.datosInstancia();
 	}
 
 	/**
@@ -192,5 +197,24 @@ public class Cluster {
 		}
 		return nuevo;
 	}
-
+	
+	public int size(){
+		return instancias.size();
+	}
+	
+	public int getNumInstancia(int i){
+		return instancias.getNumInstancia(i);
+	}
+	
+	public String getAtributosInstancia(int i){
+		return instancias.atrInstancia(i);
+	}
+	
+	public void setSil(double s){
+		silhouette = s;
+	}
+	
+	public double getSil(){
+		return silhouette;
+	}
 }

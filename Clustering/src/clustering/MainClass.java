@@ -10,11 +10,11 @@ public class MainClass {
 	}
 
 	public void ejecutar() {
-		kmeans = new KmeansAlgorithm(2, "singlelink", "2kclusters", 100, 0.0, "minkowski");
+		kmeans = new KmeansAlgorithm(2, "aleatorio", 100, 0.0, "minkowski");
 		kmeans.calcularKmeans();
 		System.out.println("////////////////////////////////////////////////////////////////////////////");
 		System.out.println("Shilhouette del agrupamiento total :" + kmeans.getSilhouetteAgrupamiento());
-		kmeans.getResultados("C:/Users/Javi/git/Clustering_Mineria/Clustering/src/arffFiles/resultados");
+		kmeans.getResultados("resultados");
 		
 	}
 

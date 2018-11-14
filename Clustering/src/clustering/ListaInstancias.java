@@ -58,30 +58,7 @@ public class ListaInstancias {
 		return aleatorio;
 	}
 
-	/**
-	 * devuelve una instancia aleatoria por división
-	 *
-	 * @param k2
-	 * @param i
-	 * @return
-	 */
-	public Instancia getRandomVectorDivision(int k2, int i) {
-		// k es el número de particiones(clusters)
-		// i será la partición correspondiente al cluster
-		if (k2 < lista.size()) {
-			Random rand = new Random();
-			int elemParticion = lista.size() / k2;
-			int maxIndex = elemParticion * i - 1;
-			int minIndex = maxIndex - elemParticion + 1;
-			int n = rand.nextInt(maxIndex + 1) + minIndex;
-			Instancia aleatorio = new Instancia(n, lista.get(n).getLista());
 
-			return aleatorio;
-		} else {
-			System.out.println("Error al asignar centroides");
-			return null;
-		}
-	}
 
 	/**
 	 * escribe todas las instancias de la lista

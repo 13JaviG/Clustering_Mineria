@@ -46,17 +46,6 @@ public class DataBase {
 		return instancias.getRandomVector();
 	}
 
-	/**
-	 * devuelve un vector aleatorio por división
-	 * 
-	 * @param k2
-	 * @param i
-	 * @return
-	 */
-	public Instancia getRandomVectorDivision(int k2, int i) {
-		// TODO Auto-generated method stub
-		return instancias.getRandomVectorDivision(k2, i);
-	}
 
 	/**
 	 * lee las instancias del fichero y las inicializa en el sistema

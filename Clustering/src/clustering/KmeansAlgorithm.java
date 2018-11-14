@@ -9,9 +9,6 @@ public class KmeansAlgorithm {
 	// número de clusters
 	private final int					k;
 
-	// completelink o singlelink-->singlelink
-	private final String				distInter;
-
 	// aleatorio o division o 2kclusters-->aleatorio
 	private final String				inicializacion;
 	private final int					iteraciones;
@@ -31,11 +28,10 @@ public class KmeansAlgorithm {
 	 * @param pIter
 	 * @param pUmbr
 	 */
-	public KmeansAlgorithm(int pK, String pDist, String pInic, int pIter, double pUmbr, String pTipoDist) {
+	public KmeansAlgorithm(int pK, String pInic, int pIter, double pUmbr, String pTipoDist) {
 
 		// Inicializaciones
 		k = pK;
-		distInter = pDist;
 		inicializacion = pInic;
 		iteraciones = pIter;
 		resultado = new ArrayList<Cluster>();
@@ -52,9 +48,6 @@ public class KmeansAlgorithm {
 		switch (inicializacion) {
 		case "aleatorio":
 			asignarVectorAleatorioClusters();
-			break;
-		case "division":
-			asignarVectorDivisionClusters();
 			break;
 		case "2kclusters":
 			asignarVector2kClusters();
@@ -502,68 +495,6 @@ public class KmeansAlgorithm {
 		}
 	}
 	
-	
-	//DIVISIÓN DEL ESPACIO
-	
-	/**
-	 * Asigna vectores en la variación de División del K-Means
-	 */
-	private void asignarVectorDivisionClusters() {
-		// vamos a dividir las instancias en tantos grupos como clusters haya
-		// el orden de la división será segun viene en el .arff
-		// y escogeremos un vector aleatorio de cada grupo y se lo asignaremos a
-		// cada cluster
-		int i = 0;
-		System.out.println("Valores de los centroides iniciales: ");
-		while (i < k) {
-			Cluster nuevo = new Cluster(getVectorAleatorioDivision(k, i));
-			if (!resultado.contains(nuevo)) {
-				resultado.add(nuevo);
-				nuevo.printCentroide();
-				i++;
-			}
-		}
-	}
-	
-	
-	/**
-	 * Devuelve un vector aleatorio para la variación de División del K-Means
-	 *
-	 * @param k2
-	 * @param i
-	 * @return
-	 */
-	private Instancia getVectorAleatorioDivision(int k2, int i) {
-		// TODO Auto-generated method stub
-		return DataBase.getDataBase().getRandomVectorDivision(k2, i);
-	}
-	
-	
-
-	private Cluster getClusterMasDistante(Cluster pCluster) {
-		Iterator<Cluster> it = resultado.iterator();
-		ArrayList<Double> distancias = new ArrayList<Double>();
-		ArrayList<Cluster> clusters = new ArrayList<Cluster>();
-		Cluster resultado = null;
-		int i = 0;
-		Double comp;
-		while (it.hasNext()) {
-			Cluster x = it.next();
-			if (!x.equals(pCluster)) {
-				distancias.add(pCluster.getVector().getDistanceTo(x.getVector().getLista(), tipoDistancia));
-				clusters.add(x);
-			}
-		}
-		comp = distancias.get(0);
-		for (Double dis : distancias) {
-			if (comp <= dis) {
-				comp = dis;
-				resultado = clusters.get(i);
-			}
-			i = i + 1;
-		}
-		return resultado;
-	}
 
 	public void getResultados(String pathOut) {
 		

@@ -9,34 +9,66 @@ import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.converters.ArffLoader.ArffReader;
 
+/**
+ * clase que nos permite guardar todos los datos del sistema
+ * 
+ * @author Frank
+ *
+ */
 public class DataBase {
 
 	private static DataBase			miDataBase;
 	private final ListaInstancias	instancias;
 
+	/**
+	 * constructora
+	 */
 	private DataBase() {
 		instancias = new ListaInstancias();
 	}
 
+	/**
+	 * devuelve las instancias de la base de datos
+	 * 
+	 * @return
+	 */
 	public ArrayList<Instancia> getInstancias() {
 
 		return this.instancias.getInstancias();
 	}
 
+	/**
+	 * devuelve una instancia random de la base de datos
+	 * 
+	 * @return
+	 */
 	public Instancia getRandomVector() {
 		return instancias.getRandomVector();
 	}
 
+	/**
+	 * devuelve un vector aleatorio por división
+	 * 
+	 * @param k2
+	 * @param i
+	 * @return
+	 */
 	public Instancia getRandomVectorDivision(int k2, int i) {
 		// TODO Auto-generated method stub
 		return instancias.getRandomVectorDivision(k2, i);
 	}
 
+	/**
+	 * lee las instancias del fichero y las inicializa en el sistema
+	 */
 	public void inicializarInstancias() {
 		readArff();
 		instancias.print();
 	}
 
+	/**
+	 * método que lee todas las instancias del fichero
+	 */
 	public void readArff() {
 
 		BufferedReader reader;
@@ -44,10 +76,10 @@ public class DataBase {
 			// leemos el fichero arff
 			reader = new BufferedReader(new FileReader(
 					// "C:/Users/803145/git/Clustering_Mineria/Clustering/src/arffFiles/diabetesTFIDF.arff"));
-					//"C:/Users/Frank/git/Clustering_Mineria/Clustering/src/arffFiles/diabetesTFIDF.arff"));
+					// "C:/Users/Frank/git/Clustering_Mineria/Clustering/src/arffFiles/diabetesTFIDF.arff"));
 					// "C:/Users/docenciaeib/Downloads/autopsiaTFIDF.arff"));
-					 "C:/Users/User/git/Clustering_Mineria/Clustering/src/arffFiles/diabetestfidf.arff"));
-					// "C:/Users/docenciaeib/git/Clustering_Mineria/Clustering/src/arffFiles/diabetestfidf.arff"));
+					"C:/Users/User/git/Clustering_Mineria/Clustering/src/arffFiles/diabetestfidf.arff"));
+			// "C:/Users/docenciaeib/git/Clustering_Mineria/Clustering/src/arffFiles/diabetestfidf.arff"));
 			ArffReader arff = new ArffReader(reader);
 			// obtenemos las instancias
 			Instances data = arff.getData();
@@ -71,6 +103,11 @@ public class DataBase {
 
 	}
 
+	/**
+	 * método que nos devuelbe la base de datos del sistema
+	 * 
+	 * @return
+	 */
 	public static DataBase getDataBase() {
 		if (DataBase.miDataBase == null) {
 			DataBase.miDataBase = new DataBase();

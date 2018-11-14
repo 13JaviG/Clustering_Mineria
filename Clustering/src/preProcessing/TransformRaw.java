@@ -2,6 +2,8 @@ package preProcessing;
 
 import utilities.CommonUtilities;
 
+import org.tartarus.*;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -9,11 +11,14 @@ import java.util.List;
 
 import weka.core.Instances;
 import weka.core.Stopwords;
+import weka.core.stemmers.SnowballStemmer;
+import weka.core.stemmers.Stemmer;
 import weka.core.tokenizers.AlphabeticTokenizer;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.*;
 import weka.filters.unsupervised.instance.RemoveWithValues;
 import weka.filters.unsupervised.instance.SparseToNonSparse;
+
 
 public class TransformRaw {
 
@@ -42,6 +47,7 @@ public class TransformRaw {
 		StringToWordVector filter;
 		Instances dataFiltered = null;
 		String relationName = data.relationName();
+		SnowballStemmer ss = new SnowballStemmer("spanish");
 
 		/*
 		 * Transformamos el arff raw a TF-IDF
@@ -53,7 +59,7 @@ public class TransformRaw {
 		// Creamos un Tokenizer y le indicamos quï¿½ sï¿½mbolos tiene que excluir
 		AlphabeticTokenizer tokenizer = new AlphabeticTokenizer();
 		filter.setTokenizer(tokenizer);
-
+		filter.setStemmer(ss);
 		filter.setTFTransform(true);
 		filter.setIDFTransform(true);
 		filter.setOutputWordCounts(true);
@@ -104,11 +110,9 @@ public class TransformRaw {
 		Stopwords stopFilter = new Stopwords();
 		stopFilter.read(new File("C:/Users/olizy/Clustering_Mineria/Clustering/stopwords-es.txt"));
 		List<Integer> words = new ArrayList<Integer>();
-		System.out.println(stopFilter.elements());
 		for (int i = 0; i < dataFiltered.numAttributes(); i++) {
-			if (stopFilter.is(dataFiltered.attribute(i).toString())) {
+			if (stopFilter.is(dataFiltered.attribute(i).name())) {
 				words.add(i);
-				System.out.println("SE elemina");
 			}
 		}
 		int[] wordsStop = new int[words.size()];
@@ -116,16 +120,28 @@ public class TransformRaw {
 		for (int i = 0; i < wordsStop.length; i++) {
 			wordsStop[i] = iterator.next().intValue();
 		}
-		
+
 		/*
 		 * Eliminar atributos que son Stopwords
 		 */
-		
+
 		Remove filtroEliminar = new Remove();
 		filtroEliminar.setAttributeIndicesArray(wordsStop);
 		filtroEliminar.setInputFormat(dataFiltered);
 		dataFiltered = Filter.useFilter(dataFiltered, filtroEliminar);
-		
+
+		/*
+		 * 
+		 * Eliminamos los atributos Outlier y Extreme
+		 */
+		Remove filtroEliminar2 = new Remove();
+		int[] iu = new int[2];
+		iu[0] = (dataFiltered.numAttributes() - 2);
+		iu[1] = (dataFiltered.numAttributes() - 1);
+		filtroEliminar2.setAttributeIndicesArray(iu);
+		filtroEliminar2.setInputFormat(dataFiltered);
+		dataFiltered = Filter.useFilter(dataFiltered, filtroEliminar2);
+
 		/*
 		 * Normalizamos los vectores
 		 */

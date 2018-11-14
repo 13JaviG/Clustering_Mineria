@@ -2,8 +2,6 @@ package preProcessing;
 
 import utilities.CommonUtilities;
 
-import org.tartarus.*;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -12,13 +10,11 @@ import java.util.List;
 import weka.core.Instances;
 import weka.core.Stopwords;
 import weka.core.stemmers.SnowballStemmer;
-import weka.core.stemmers.Stemmer;
 import weka.core.tokenizers.AlphabeticTokenizer;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.*;
 import weka.filters.unsupervised.instance.RemoveWithValues;
 import weka.filters.unsupervised.instance.SparseToNonSparse;
-
 
 public class TransformRaw {
 
@@ -138,6 +134,7 @@ public class TransformRaw {
 		int[] iu = new int[2];
 		iu[0] = (dataFiltered.numAttributes() - 2);
 		iu[1] = (dataFiltered.numAttributes() - 1);
+		//filtroEliminar2.setAttributeIndices(Integer.toString(dataFiltered.numAttributes() - 1));
 		filtroEliminar2.setAttributeIndicesArray(iu);
 		filtroEliminar2.setInputFormat(dataFiltered);
 		dataFiltered = Filter.useFilter(dataFiltered, filtroEliminar2);

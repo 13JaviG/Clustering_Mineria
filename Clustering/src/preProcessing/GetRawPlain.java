@@ -16,6 +16,7 @@ public class GetRawPlain {
 		// TODO Auto-generated method stub
 		String pathIn = args[0];
 		String pathOut = args[1];
+		float factor = Float.parseFloat(args[2]);
 		BufferedReader reader = new BufferedReader(new FileReader(new File(pathIn)));
 		PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(new File(pathOut))));
 		writer.println("@relation articles\n\n@attribute article string\n\n@data");
@@ -27,7 +28,7 @@ public class GetRawPlain {
 			if (lineIterator.contains("[[")) {
 				Random r = new Random();
 				float k = r.nextFloat();
-				if (k <= 0.10f) {
+				if (k <= factor) {
 					article = weka.core.Utils.quote(article);
 					writer.println(article);
 				}

@@ -33,11 +33,11 @@ public class Instancia {
 	}
 
 	public String atrInstancia() {
-		return "- " + listaAtributos;
+		return "- " + Arrays.toString(listaAtributos);
 	}
 
 	public String datosInstancia() {
-		return Integer.toString(numInst) + " - " + listaAtributos;
+		return Integer.toString(numInst) + " - " + Arrays.toString(listaAtributos);
 	}
 
 	/**

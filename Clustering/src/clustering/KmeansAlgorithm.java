@@ -93,6 +93,7 @@ public class KmeansAlgorithm {
 	public void asignarKClustersMasAlejados() {
 
 		ArrayList<Cluster> pClusters = new ArrayList<Cluster>();
+		
 		while (pClusters.size() < k) {
 
 			// Inicializaciones
@@ -294,11 +295,11 @@ public class KmeansAlgorithm {
 
 		double Silhouette = 0.0;
 		// Calculamos la cohesión
-		double cohexion = pCluster.getDistanciaMedia(pInstancia, tipoDistancia);
+		double cohexion = pCluster.getDistanciaMedia(pInstancia, "euclidea");
 
 		// Calculamos la separación
 		Cluster masCercano = getClusterMasCercano(pCluster);
-		double separacion = masCercano.getDistanciaMedia(pInstancia, tipoDistancia);
+		double separacion = masCercano.getDistanciaMedia(pInstancia, "euclidea");
 
 		if (cohexion >= separacion) {
 			Silhouette = (separacion - cohexion) / cohexion;
@@ -351,6 +352,7 @@ public class KmeansAlgorithm {
 				sumaPorCluster = sumaPorCluster + sh;
 				this.getSilhouette(inst, c);
 			}
+			
 			double x = sumaPorCluster / iporCluster;
 			if (Double.isNaN(x)) {
 				x= 0.0;

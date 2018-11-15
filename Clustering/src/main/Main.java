@@ -5,6 +5,8 @@ import preProcessing.GetRawPlain;
 import preProcessing.TransformRaw;
 
 public class Main {
+	
+	Double time;
 	/**
 	 * Este es el programa principal de todo el paquete, que permite, primero
 	 * convertir un conjunto de datos en TFIDF para luego realizar un algoritmo de
@@ -32,7 +34,6 @@ public class Main {
 				params2[0] = "ArticlesRaw.arff";
 				params2[1] = "ArticlesTFIDF.arff";
 				TransformRaw.main(params2);*/
-
 				MainClass.getMainClass().ejecutar(clusters, "2kclusters", it, conv, "manhattan", args[1]);
 			} else if (args[3].equals("-ma") && args[4].equals("-a")) {
 				int clusters = Integer.parseInt(args[2]);

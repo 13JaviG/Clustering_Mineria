@@ -175,6 +175,7 @@ public class CommonUtilities {
 				writer.println(clusters.get(i).printDatosCentroide());
 				writer.println("==========================================================================================================");
 			}
+			writer.println("La ejecucion del algoritmo de clustering ha durado: " + clustering.MainClass.getMainClass().getTime() + " ms");
 			writer.println("==========================================================================================================");
 			writer.println("==========================================================================================================");
 			writer.println("      ");
@@ -189,6 +190,7 @@ public class CommonUtilities {
 				writer.println("SILHOUETTE MEDIO DEL CLUSTER NÚMERO:	"+(i+1));
 				writer.println(Double.toString(clusters.get(i).getSil()));
 				silMedio = silMedio + clusters.get(i).getSil();
+				writer.println("NUMERO DE INSTANCIAS: " + clusters.get(i).size());
 				writer.println("==========================================================================================================");
 			}
 			silMedio = silMedio/i;

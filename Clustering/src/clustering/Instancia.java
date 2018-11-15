@@ -2,6 +2,7 @@ package clustering;
 
 import java.util.Arrays;
 
+import org.apache.commons.math3.analysis.function.Abs;
 import org.apache.commons.math3.analysis.function.Power;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
@@ -61,7 +62,10 @@ public class Instancia {
 			RealVector negativo = realvector2.mapMultiply(-1);
 			RealVector negativo1 = negativo.add(realvector1);
 			Power pow = new Power(0.133333);
-			RealVector minko75 = negativo1.mapToSelf(pow);
+			Abs abs = new Abs();
+			// valor abs negativo1
+			RealVector negativo3 = negativo1.mapToSelf(abs);
+			RealVector minko75 = negativo3.mapToSelf(pow);
 
 			// obtenemos la distancia minkowski
 			double dist = Math.pow(minko75.getL1Norm(), 0.1333333);

@@ -1,9 +1,6 @@
 package test;
 
-import java.util.Random;
 import main.Main;
-import preProcessing.GetRawPlain;
-import preProcessing.TransformRaw;
 
 public class TestWikiArticles {
 
@@ -23,19 +20,19 @@ public class TestWikiArticles {
 		j[0] = "ArticlesRaw.arff";
 		j[1] = "ArticlesTFIDF.arff";
 
-		//GetRawPlain.main(p);
-		//TransformRaw.main(j);
+		// GetRawPlain.main(p);
+		// TransformRaw.main(j);
 		String[] pp = new String[7];
 		pp[0] = "C:/Users/olizy/Desktop/es/full.txt";
-		pp[1] = "C:/tmpp/result.txt";
-		pp[2] = "4";
+		pp[1] = "C:/Users/Frank/Desktop/resultado.txt";
+		pp[2] = "10";
 		pp[3] = "-mi";
-		pp[4] = "-2k";
+		pp[4] = "-a";
 		pp[5] = "100";
 		pp[6] = "0.0";
 		Main.main(pp);
 		System.out.println("He terminado cruck");
-		
+
 	}
 
 }

@@ -53,7 +53,10 @@ public class KmeansAlgorithm {
 
 		while (it.hasNext()) {
 			Cluster nuevo = it.next();
-			if (nuevo.calcularDistancia(pInst.getLista(), tipoDistancia) < distancia) {
+			if (nuevo.getCentroide() == pInst.getLista()) {
+				break;
+			} else if (nuevo.calcularDistancia(pInst.getLista(), tipoDistancia) < distancia) {
+				distancia = nuevo.calcularDistancia(pInst.getLista(), tipoDistancia);
 				pos = i;
 			}
 			i++;
@@ -93,7 +96,7 @@ public class KmeansAlgorithm {
 	public void asignarKClustersMasAlejados() {
 
 		ArrayList<Cluster> pClusters = new ArrayList<Cluster>();
-		
+
 		while (pClusters.size() < k) {
 
 			// Inicializaciones
@@ -352,10 +355,10 @@ public class KmeansAlgorithm {
 				sumaPorCluster = sumaPorCluster + sh;
 				this.getSilhouette(inst, c);
 			}
-			
+
 			double x = sumaPorCluster / iporCluster;
 			if (Double.isNaN(x)) {
-				x= 0.0;
+				x = 0.0;
 			}
 			resultado.get(ClusterID - 1).setSil(x);
 

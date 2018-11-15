@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 /**
  * clase para guardar los centroides
- * 
+ *
  * @author Frank
  *
  */
 public class Centroides {
 
-	private final ArrayList<ArrayList<String>> centroides = new ArrayList<ArrayList<String>>();
+	private final ArrayList<double[]> centroides = new ArrayList<double[]>();
 
 	/**
 	 * constructora
@@ -24,7 +24,7 @@ public class Centroides {
 	 *
 	 * @param pCentroide
 	 */
-	public void add(ArrayList<String> pCentroide) {
+	public void add(double[] pCentroide) {
 		centroides.add(pCentroide);
 	}
 
@@ -34,7 +34,7 @@ public class Centroides {
 	 * @param i
 	 * @return
 	 */
-	public ArrayList<String> get(int i) {
+	public double[] get(int i) {
 		return centroides.get(i);
 	}
 

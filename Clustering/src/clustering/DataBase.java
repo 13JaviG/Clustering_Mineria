@@ -11,7 +11,7 @@ import weka.core.converters.ArffLoader.ArffReader;
 
 /**
  * clase que nos permite guardar todos los datos del sistema
- * 
+ *
  * @author Frank
  *
  */
@@ -29,7 +29,7 @@ public class DataBase {
 
 	/**
 	 * devuelve las instancias de la base de datos
-	 * 
+	 *
 	 * @return
 	 */
 	public ArrayList<Instancia> getInstancias() {
@@ -39,13 +39,12 @@ public class DataBase {
 
 	/**
 	 * devuelve una instancia random de la base de datos
-	 * 
+	 *
 	 * @return
 	 */
 	public Instancia getRandomVector() {
 		return instancias.getRandomVector();
 	}
-
 
 	/**
 	 * lee las instancias del fichero y las inicializa en el sistema
@@ -65,11 +64,11 @@ public class DataBase {
 			// leemos el fichero arff
 			reader = new BufferedReader(new FileReader(
 					// "C:/Users/803145/git/Clustering_Mineria/Clustering/src/arffFiles/diabetesTFIDF.arff"));
-					 "C:/Users/Javi/git/Clustering_Mineria/Clustering/src/arffFiles/diabetesTFIDF.arff"));
-					// "C:/Users/docenciaeib/Downloads/autopsiaTFIDF.arff"));
-					//"C:/Users/User/git/Clustering_Mineria/Clustering/src/arffFiles/diabetestfidf.arff"));
+					"C:/Users/Frank/git/Clustering_Mineria/Clustering/src/arffFiles/diabetesTFIDF.arff"));
+			// "C:/Users/docenciaeib/Downloads/autopsiaTFIDF.arff"));
+			// "C:/Users/User/git/Clustering_Mineria/Clustering/src/arffFiles/diabetestfidf.arff"));
 			// "C:/Users/docenciaeib/git/Clustering_Mineria/Clustering/src/arffFiles/diabetestfidf.arff"));
-					//"C:\Users\Javi\git\Clustering_Mineria\Clustering\src\arffFiles\diabetestfidf.arff"
+			// "C:\Users\Javi\git\Clustering_Mineria\Clustering\src\arffFiles\diabetestfidf.arff"
 			ArffReader arff = new ArffReader(reader);
 			// obtenemos las instancias
 			Instances data = arff.getData();
@@ -79,9 +78,9 @@ public class DataBase {
 			for (int i = 0; i <= numInst; i++) {
 				Instance instance = data.instance(i);
 				System.out.println(" ");
-				ArrayList<String> arraylist = new ArrayList<String>();
+				double[] arraylist = new double[numAtr + 1];
 				for (int j = 0; j <= numAtr; j++) {
-					arraylist.add(instance.toString(j));
+					arraylist[j] = Double.parseDouble(instance.toString(j));
 				}
 				Instancia nueva = new Instancia(i, arraylist);
 				instancias.add(nueva);
@@ -95,7 +94,7 @@ public class DataBase {
 
 	/**
 	 * método que nos devuelbe la base de datos del sistema
-	 * 
+	 *
 	 * @return
 	 */
 	public static DataBase getDataBase() {

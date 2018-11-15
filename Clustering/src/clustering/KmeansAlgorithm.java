@@ -160,7 +160,6 @@ public class KmeansAlgorithm {
 	public void asignarVector2kClusters() {
 		// TODO Auto-generated method stub
 		int i = 0;
-		System.out.println("Valores de los centroides iniciales: ");
 		while (i < 2 * k) {
 			Cluster nuevo = new Cluster(getVectorAleatorio());
 			if (!resultado.contains(nuevo)) {
@@ -293,7 +292,7 @@ public class KmeansAlgorithm {
 	 */
 	public double getSilhouette(Instancia pInstancia, Cluster pCluster) {
 
-		double Silhouette = 0;
+		double Silhouette = 0.0;
 		// Calculamos la cohesión
 		double cohexion = pCluster.getDistanciaMedia(pInstancia, tipoDistancia);
 
@@ -352,8 +351,11 @@ public class KmeansAlgorithm {
 				sumaPorCluster = sumaPorCluster + sh;
 				this.getSilhouette(inst, c);
 			}
-
-			resultado.get(ClusterID - 1).setSil(sumaPorCluster / iporCluster);
+			double x = sumaPorCluster / iporCluster;
+			if (Double.isNaN(x)) {
+				x= 0.0;
+			}
+			resultado.get(ClusterID - 1).setSil(x);
 
 		}
 		System.out.println("======================================================");
@@ -361,7 +363,10 @@ public class KmeansAlgorithm {
 		System.out.println("======================================================");
 		System.out.println(" ");
 		this.silhouette = shilhouette / i;
-		return shilhouette / i;
+		if (Double.isNaN(this.silhouette)) {
+			this.silhouette = 0.0;
+		}
+		return this.silhouette;
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

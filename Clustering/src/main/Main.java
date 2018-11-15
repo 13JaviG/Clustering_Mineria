@@ -15,104 +15,106 @@ public class Main {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
+		String factor = "0.001";
 		if (args.length == 7) {
 			if (args[3].equals("-ma") && args[4].equals("-2k")) {
+				
 				int clusters = Integer.parseInt(args[2]);
 				int it = Integer.parseInt(args[5]);
 				float conv = Float.parseFloat(args[6]);
-
+/*
 				String[] params = new String[3];
 				params[0] = args[0];
 				params[1] = "ArticlesRaw.arff";
-				params[2] = "0.003";
+				params[2] = factor;
 				GetRawPlain.main(params);
 				String[] params2 = new String[2];
 				params2[0] = "ArticlesRaw.arff";
 				params2[1] = "ArticlesTFIDF.arff";
-				TransformRaw.main(params2);
+				TransformRaw.main(params2);*/
 
 				MainClass.getMainClass().ejecutar(clusters, "2kclusters", it, conv, "manhattan", args[1]);
 			} else if (args[3].equals("-ma") && args[4].equals("-a")) {
 				int clusters = Integer.parseInt(args[2]);
 				int it = Integer.parseInt(args[5]);
 				float conv = Float.parseFloat(args[6]);
-
+/*
 				String[] params = new String[3];
 				params[0] = args[0];
 				params[1] = "ArticlesRaw.arff";
-				params[2] = "0.003";
+				params[2] = factor;
 				GetRawPlain.main(params);
 				String[] params2 = new String[2];
 				params2[0] = "ArticlesRaw.arff";
 				params2[1] = "ArticlesTFIDF.arff";
 				TransformRaw.main(params2);
-
+*/
 				MainClass.getMainClass().ejecutar(clusters, "aleatorio", it, conv, "manhattan", args[1]);
 			} else if (args[3].equals("-mi") && args[4].equals("-2k")) {
 				int clusters = Integer.parseInt(args[2]);
 				int it = Integer.parseInt(args[5]);
 				float conv = Float.parseFloat(args[6]);
-
+/*
 				String[] params = new String[3];
 				params[0] = args[0];
 				params[1] = "ArticlesRaw.arff";
-				params[2] = "0.003";
+				params[2] = factor;
 				GetRawPlain.main(params);
 				String[] params2 = new String[2];
 				params2[0] = "ArticlesRaw.arff";
 				params2[1] = "ArticlesTFIDF.arff";
 				TransformRaw.main(params2);
-
+*/
 				MainClass.getMainClass().ejecutar(clusters, "2kclusters", it, conv, "minkowski", args[1]);
 
 			} else if (args[3].equals("-mi") && args[4].equals("-a")) {
 				int clusters = Integer.parseInt(args[2]);
 				int it = Integer.parseInt(args[5]);
 				float conv = Float.parseFloat(args[6]);
-
+/*
 				String[] params = new String[3];
 				params[0] = args[0];
 				params[1] = "ArticlesRaw.arff";
-				params[2] = "0.003";
+				params[2] = factor;
 				GetRawPlain.main(params);
 				String[] params2 = new String[2];
 				params2[0] = "ArticlesRaw.arff";
 				params2[1] = "ArticlesTFIDF.arff";
 				TransformRaw.main(params2);
-
+*/
 				MainClass.getMainClass().ejecutar(clusters, "aleatorio", it, conv, "minkowski", args[1]);
 			} else if (args[3].equals("-e") && args[4].equals("-2k")) {
 				int clusters = Integer.parseInt(args[2]);
 				int it = Integer.parseInt(args[5]);
 				float conv = Float.parseFloat(args[6]);
-
+/*
 				String[] params = new String[3];
 				params[0] = args[0];
 				params[1] = "ArticlesRaw.arff";
-				params[2] = "0.003";
+				params[2] = factor;
 				GetRawPlain.main(params);
 				String[] params2 = new String[2];
 				params2[0] = "ArticlesRaw.arff";
 				params2[1] = "ArticlesTFIDF.arff";
 				TransformRaw.main(params2);
-
+*/
 				MainClass.getMainClass().ejecutar(clusters, "2kclusters", it, conv, "euclidea", args[1]);
 
-			} else if (args[3].equals("e") && args[4].equals("-a")) {
+			} else if (args[3].equals("-e") && args[4].equals("-a")) {
 				int clusters = Integer.parseInt(args[2]);
 				int it = Integer.parseInt(args[5]);
 				float conv = Float.parseFloat(args[6]);
-
+/*
 				String[] params = new String[3];
 				params[0] = args[0];
 				params[1] = "ArticlesRaw.arff";
-				params[2] = "0.003";
+				params[2] = factor;
 				GetRawPlain.main(params);
 				String[] params2 = new String[2];
 				params2[0] = "ArticlesRaw.arff";
 				params2[1] = "ArticlesTFIDF.arff";
 				TransformRaw.main(params2);
-
+*/
 				MainClass.getMainClass().ejecutar(clusters, "aleatorio", it, conv, "euclidea", args[1]);
 			}
 		} else if (args.length == 0) {
@@ -138,5 +140,7 @@ public class Main {
 			utilities.CommonUtilities.printlnError("Numero de parametros incorrecto");
 			System.exit(1);
 		}
+		System.out.println("Se ha terminado y se ha generado el fichero de resultados.");
+		System.exit(0);
 	}
 }

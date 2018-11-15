@@ -29,12 +29,12 @@ public class TestWikiArticles {
 		//TransformRaw.main(j);
 		String[] pp = new String[7];
 		pp[0] = "C:/Users/olizy/Desktop/es/full.txt";
-		pp[1] = "C:/Users/olizy/Desktop/res.txt";
+		pp[1] = "C:/Users/olizy/Desktop/results.txt";
 		pp[2] = "3";
 		pp[3] = "-ma";
-		pp[4] = "-2k";
+		pp[4] = "-a";
 		pp[5] = "50";
-		pp[6] = "0.0005";
+		pp[6] = "0.0";
 		Main.main(pp);
 		System.out.println("He terminado cruck");
 		

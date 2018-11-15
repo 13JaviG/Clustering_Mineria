@@ -37,7 +37,7 @@ public class Instancia {
 	}
 
 	public String datosInstancia() {
-		return Integer.toString(numInst) + " - " + Arrays.toString(listaAtributos);
+		return Arrays.toString(listaAtributos);
 	}
 
 	/**

@@ -17,7 +17,7 @@ public class Main {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		String factor = "0.001";
+		String factor = "0.0015";
 		if (args.length == 7) {
 			if (args[3].equals("-ma") && args[4].equals("-2k")) {
 				

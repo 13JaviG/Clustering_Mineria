@@ -11,8 +11,8 @@ public class TestWikiArticles {
 		// TODO Auto-generated method stub
 		String[] p = new String[3];
 		p[0] = "C:/Users/olizy/Desktop/es/full.txt";
-		p[1] = "C:/Users/olizy/Desktop/ArticlesRaw002.arff";
-		p[2] = "0.002";
+		p[1] = "ArticlesRaw.arff";
+		p[2] = "0.0015";
 
 		String[] o = new String[3];
 		o[0] = "-d";
@@ -20,11 +20,9 @@ public class TestWikiArticles {
 		o[2] = "C:/Users/Javi/Desktop/train.arff";
 
 		String[] j = new String[2];
-		j[0] = "C:/Users/olizy/Desktop/ArticlesRaw002.arff";
-		j[1] = "C:/Users/olizy/Desktop/ArticlesTFIDFv8.arff";
+		j[0] = "ArticlesRaw.arff";
+		j[1] = "ArticlesTFIDF.arff";
 
-		// CSVtoArff.main(p);
-		// GetRaw.main(o);
 		//GetRawPlain.main(p);
 		//TransformRaw.main(j);
 		String[] pp = new String[7];

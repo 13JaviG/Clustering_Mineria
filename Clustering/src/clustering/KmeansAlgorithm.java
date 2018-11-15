@@ -87,7 +87,7 @@ public class KmeansAlgorithm {
 
 	/**
 	 * Asigna los K clusters más alejados para el 2K
-	 * 
+	 *
 	 * @param pClusters
 	 */
 	public void asignarKClustersMasAlejados() {
@@ -165,7 +165,6 @@ public class KmeansAlgorithm {
 			Cluster nuevo = new Cluster(getVectorAleatorio());
 			if (!resultado.contains(nuevo)) {
 				resultado.add(nuevo);
-				nuevo.printCentroide();
 				i++;
 			}
 		}
@@ -179,8 +178,6 @@ public class KmeansAlgorithm {
 	public void asignarVectorAleatorioClusters() {
 
 		int i = 0;
-		System.out.println("Valores de los centroides iniciales: ");
-
 		while (i < k) {
 
 			Cluster nuevo = new Cluster(getVectorAleatorio());
@@ -188,7 +185,6 @@ public class KmeansAlgorithm {
 			if (!resultado.contains(nuevo)) {
 
 				resultado.add(nuevo);
-				nuevo.printCentroide();
 				i++;
 			}
 		}
@@ -215,20 +211,16 @@ public class KmeansAlgorithm {
 	 * Método principal para calcular el K-Means Clustering
 	 */
 	public void calcularKmeans() {
-
+		System.out.println(" ");
+		System.out.println("================================");
+		System.out.println("Iniciando cálculo del k-means");
+		System.out.println("================================");
+		System.out.println(" ");
 		// Inicializaciones de variables y asignaciones de clusters
 		DataBase.getDataBase().inicializarInstancias();
 		asignarVectorClusters();
 		asignarInstanciasClusters();
 		int i = 0;
-
-		// Imprimimos por pantalla los valores iniciales seleccionados
-		System.out.println("**¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*");
-		System.out.println("**¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*");
-		System.out.println("Valores iniciales clusters");
-		System.out.println("**¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*");
-		System.out.println("**¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*");
-		imprimirClusters();
 
 		while (i < iteraciones) {
 			int j = 0;
@@ -252,31 +244,16 @@ public class KmeansAlgorithm {
 			}
 			i++;
 		}
-
-		// Imprimimos los datos de los Clusters
-		System.out.println("***********************************");
-		System.out.println("***********************************");
-		System.out.println("Instancias totales de la muestra: " + DataBase.getDataBase().getInstancias().size());
-		imprimirClusters();
-	}
-
-	public void compararClustersInstancias() {
-		// TODO - implement KmeansAlgorithm.compararClustersInstancias
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 *
-	 * @param pK
-	 */
-	public void crearClusters(int pK) {
-		// TODO - implement KmeansAlgorithm.crearClusters
-		throw new UnsupportedOperationException();
+		System.out.println(" ");
+		System.out.println("================================");
+		System.out.println("Terminado el cálculo del k-means");
+		System.out.println("================================");
+		System.out.println(" ");
 	}
 
 	/**
 	 * Devuelve el valor mínimo de un arraylist de Doubles
-	 * 
+	 *
 	 * @param pArray
 	 * @return double
 	 */
@@ -342,7 +319,11 @@ public class KmeansAlgorithm {
 	 * @return double
 	 */
 	public double getSilhouetteAgrupamiento() {
-
+		System.out.println(" ");
+		System.out.println("==================================================");
+		System.out.println("Iniciando cálculo del índice de calidad silhouette");
+		System.out.println("==================================================");
+		System.out.println(" ");
 		// Inicializaciones del método
 		double shilhouette = 0;
 		int i = 0;
@@ -352,11 +333,6 @@ public class KmeansAlgorithm {
 		double sumaPorCluster = 0;
 
 		Iterator<Cluster> it = resultado.iterator();
-
-		System.out.println("////////////////////////////////////////////////////////////////////");
-		System.out.println("El Sillhouette es un indice de calidad interna que varia de -1 a 1");
-		System.out.println("Siendo -1 una mala clasificación y 1 una buena clasificación");
-		System.out.println("////////////////////////////////////////////////////////////////////");
 
 		while (it.hasNext()) {
 
@@ -378,12 +354,12 @@ public class KmeansAlgorithm {
 			}
 
 			resultado.get(ClusterID - 1).setSil(sumaPorCluster / iporCluster);
-			System.out.println("Cluster " + ClusterID + " :");
-			System.out.println("	Indice Sillhouette : " + sumaPorCluster / iporCluster);
-			System.out.println("	Número de Instancias : " + iporCluster);
-			System.out.println();
 
 		}
+		System.out.println("======================================================");
+		System.out.println("Termminado el cálculo del índice de calidad silhouette");
+		System.out.println("======================================================");
+		System.out.println(" ");
 		this.silhouette = shilhouette / i;
 		return shilhouette / i;
 	}
@@ -412,7 +388,7 @@ public class KmeansAlgorithm {
 
 	/**
 	 * Elimina los clusters de resultado que no estén en pClusters
-	 * 
+	 *
 	 * @param pClusters
 	 */
 	public void reasignarResultado(ArrayList<Cluster> pClusters) {

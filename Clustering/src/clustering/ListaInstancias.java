@@ -27,6 +27,10 @@ public class ListaInstancias {
 		lista.add(pInst);
 	}
 
+	public String atrInstancia(int i) {
+		return lista.get(i).atrInstancia();
+	}
+
 	/**
 	 * devuelve todas las instancias de lalista
 	 *
@@ -45,6 +49,10 @@ public class ListaInstancias {
 		return lista.iterator();
 	}
 
+	public int getNumInstancia(int i) {
+		return lista.get(i).getNumInst();
+	}
+
 	/**
 	 * devuelve una instancia aleatoria
 	 *
@@ -52,13 +60,10 @@ public class ListaInstancias {
 	 */
 	public Instancia getRandomVector() {
 		Random rand = new Random();
-		System.out.println("size" + lista.size());
 		int n = rand.nextInt(lista.size() - 1);
 		Instancia aleatorio = new Instancia(n, lista.get(n).getLista());
 		return aleatorio;
 	}
-
-
 
 	/**
 	 * escribe todas las instancias de la lista
@@ -71,22 +76,14 @@ public class ListaInstancias {
 
 	}
 
+	public int size() {
+		return lista.size();
+	}
+
 	/**
 	 * vacía todas las instancias de la lista
 	 */
 	public void vaciarLista() {
 		lista = new ArrayList<Instancia>();
-	}
-	
-	public int getNumInstancia(int i){
-		return lista.get(i).getNumInst();
-	}
-	
-	public String atrInstancia(int i){
-		return lista.get(i).atrInstancia();
-	}
-	
-	public int size(){
-		return lista.size();
 	}
 }

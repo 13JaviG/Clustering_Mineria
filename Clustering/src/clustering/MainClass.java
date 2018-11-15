@@ -12,11 +12,9 @@ public class MainClass {
 	public void ejecutar() {
 
 		kmeans = new KmeansAlgorithm(2, "aleatorio", 100, 0.0, "euclidea");
-
 		kmeans.calcularKmeans();
-		System.out.println("////////////////////////////////////////////////////////////////////////////");
-		System.out.println("Shilhouette del agrupamiento total :" + kmeans.getSilhouetteAgrupamiento());
-		// kmeans.getResultados("resultados");
+		kmeans.getSilhouetteAgrupamiento();
+		kmeans.getResultados("resultados");
 
 	}
 

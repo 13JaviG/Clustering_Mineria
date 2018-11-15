@@ -5,14 +5,15 @@ import preProcessing.GetRawPlain;
 import preProcessing.TransformRaw;
 
 public class Main {
-	
+
 	Double time;
+
 	/**
 	 * Este es el programa principal de todo el paquete, que permite, primero
-	 * convertir un conjunto de datos en TFIDF para luego realizar un algoritmo de
-	 * clustering kmeans y obtener un fichero de texto que contiene los resultados
-	 * además de un índice de calidad Silhouette.
-	 * 
+	 * convertir un conjunto de datos en TFIDF para luego realizar un algoritmo
+	 * de clustering kmeans y obtener un fichero de texto que contiene los
+	 * resultados además de un índice de calidad Silhouette.
+	 *
 	 * @param args
 	 * @throws Exception
 	 */
@@ -20,7 +21,7 @@ public class Main {
 		String factor = "0.0015";
 		if (args.length == 7) {
 			if (args[3].equals("-ma") && args[4].equals("-2k")) {
-				
+
 				int clusters = Integer.parseInt(args[2]);
 				int it = Integer.parseInt(args[5]);
 				float conv = Float.parseFloat(args[6]);

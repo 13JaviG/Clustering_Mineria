@@ -10,10 +10,12 @@ public class MainClass {
 	}
 
 	public void ejecutar() {
-		kmeans = new KmeansAlgorithm(5, "singlelink", "aleatorio", 100, 0.0, "manhattan");
+		kmeans = new KmeansAlgorithm(5, "aleatorio", 100, 0.0, "manhattan");
 		kmeans.calcularKmeans();
-		System.out.println("////////////////////////////////////////////////////////////////////////////");
+		System.out.println("==========================================================================");
 		System.out.println("Shilhouette del agrupamiento total :" + kmeans.getSilhouetteAgrupamiento());
+		System.out.println("==========================================================================");
+		System.out.println("	");
 
 	}
 

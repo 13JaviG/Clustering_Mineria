@@ -7,9 +7,6 @@ public class KmeansAlgorithm {
 	// número de clusters
 	private final int					k;
 
-	// completelink o singlelink-->singlelink
-	private final String				distInter;
-
 	// aleatorio o division o 2kclusters-->aleatorio
 	private final String				inicializacion;
 	private final int					iteraciones;
@@ -27,11 +24,10 @@ public class KmeansAlgorithm {
 	 * @param pIter
 	 * @param pUmbr
 	 */
-	public KmeansAlgorithm(int pK, String pDist, String pInic, int pIter, double pUmbr, String pTipoDist) {
+	public KmeansAlgorithm(int pK, String pInic, int pIter, double pUmbr, String pTipoDist) {
 
 		// Inicializaciones
 		k = pK;
-		distInter = pDist;
 		inicializacion = pInic;
 		iteraciones = pIter;
 		resultado = new ArrayList<Cluster>();
@@ -87,6 +83,53 @@ public class KmeansAlgorithm {
 		}
 	}
 
+	public void asignarKClustersMasAlejados(ArrayList<Cluster> pClusters) {
+		while (pClusters.size() < k) {
+			Iterator<Cluster> it = resultado.iterator();
+			Iterator<Cluster> it2 = resultado.iterator();
+			Iterator<Cluster> it3 = pClusters.iterator();
+			int i = 0;
+			int j = 0;
+			int index = 0;
+			double[][] matriz = new double[resultado.size()][resultado.size()];
+			double dis = 0;
+			while (it.hasNext()) {
+				Cluster c = it.next();
+				if (!pClusters.contains(c)) {
+					while (it2.hasNext()) {
+						Cluster c2 = it2.next();
+						if (pClusters.contains(c2)) {
+							ArrayList<Double> aDis = new ArrayList<Double>();
+							while (it3.hasNext()) {
+								Cluster c3 = it3.next();
+								aDis.add(c.getVector().getDistanceTo(c3.getVector().getLista(), tipoDistancia));
+							}
+							matriz[i][j] = getMinimo(aDis);
+						} else {
+							matriz[i][j] = c.getVector().getDistanceTo(c2.getVector().getLista(), tipoDistancia);
+						}
+						j++;
+					}
+					i++;
+				}
+			}
+			dis = matriz[0][0];
+			i = j = 0;
+			while (i < resultado.size()) {
+				while (j < resultado.size()) {
+					if (dis < matriz[i][j]) {
+						dis = matriz[i][j];
+						index = i;
+					}
+					j++;
+				}
+				i++;
+			}
+			pClusters.add(resultado.get(index));
+		}
+		reasignarResultado(pClusters);
+	}
+
 	/**
 	 * Asigna vectores iniciales en la variación 2k del K-Means
 	 */
@@ -98,12 +141,11 @@ public class KmeansAlgorithm {
 			Cluster nuevo = new Cluster(getVectorAleatorio());
 			if (!resultado.contains(nuevo)) {
 				resultado.add(nuevo);
-				nuevo.printCentroide();
 				i++;
 			}
 		}
 		asignarKClustersMasAlejados(recalcular2KClusters());
-		
+
 	}
 
 	/**
@@ -119,9 +161,7 @@ public class KmeansAlgorithm {
 			Cluster nuevo = new Cluster(getVectorAleatorio());
 
 			if (!resultado.contains(nuevo)) {
-
 				resultado.add(nuevo);
-				nuevo.printCentroide();
 				i++;
 			}
 		}
@@ -134,9 +174,6 @@ public class KmeansAlgorithm {
 		switch (inicializacion) {
 		case "aleatorio":
 			asignarVectorAleatorioClusters();
-			break;
-		case "division":
-			asignarVectorDivisionClusters();
 			break;
 		case "2kclusters":
 			asignarVector2kClusters();
@@ -158,13 +195,10 @@ public class KmeansAlgorithm {
 		asignarInstanciasClusters();
 		int i = 0;
 
-		// Imprimimos por pantalla los valores iniciales seleccionados
-		System.out.println("**¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*");
-		System.out.println("**¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*");
-		System.out.println("Valores iniciales clusters");
-		System.out.println("**¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*");
-		System.out.println("**¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*¿*");
-		imprimirClusters();
+		System.out.println("===========================================");
+		System.out.println("Iniciando el cáculo del clústering k-means.");
+		System.out.println("===========================================");
+		System.out.println("	");
 
 		while (i < iteraciones) {
 			int j = 0;
@@ -189,28 +223,34 @@ public class KmeansAlgorithm {
 			i++;
 		}
 
-		// Imprimimos los datos de los Clusters
-		System.out.println("***********************************");
-		System.out.println("***********************************");
-		System.out.println("Instancias totales de la muestra: " + DataBase.getDataBase().getInstancias().size());
-		imprimirClusters();
+		System.out.println("=================================================");
+		System.out.println("Se ha terminado el cáculo del clústering k-means.");
+		System.out.println("=================================================");
+		System.out.println("	");
 	}
 
-	public void compararClustersInstancias() {
-		// TODO - implement KmeansAlgorithm.compararClustersInstancias
-		throw new UnsupportedOperationException();
+	public double getMinimo(ArrayList<Double> pArray) {
+		double min = Double.MAX_VALUE;
+
+		for (Double tmp : pArray) {
+			if (tmp < min) {
+				min = tmp;
+			}
+		}
+
+		return min;
 	}
 
-	/**
-	 *
-	 * @param pK
-	 */
-	public void crearClusters(int pK) {
-		// TODO - implement KmeansAlgorithm.crearClusters
-		throw new UnsupportedOperationException();
-	}
-
-	
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////// MÉTODOS
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// /////////////////////////////////////////////////
+	////////////////////////////// PARA CALCULAR
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// /////////////////////////////////////////////////
+	///////////////////////////// EL SILHOUETTE
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// /////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * Método para calcular el Silhouette
@@ -253,53 +293,36 @@ public class KmeansAlgorithm {
 		// Inicializaciones del método
 		double shilhouette = 0;
 		int i = 0;
-		@SuppressWarnings("unused")
-		int iporCluster = 0;
-		int ClusterID = 0;
 		double sumaPorCluster = 0;
 		Iterator<Cluster> it = resultado.iterator();
-		
-		System.out.println("////////////////////////////////////////////////////////////////////");
-		System.out.println("El Sillhouette es un indice de calidad interna que varia de -1 a 1");
-		System.out.println("Siendo -1 una mala clasificación y 1 una buena clasificación");
-		System.out.println("////////////////////////////////////////////////////////////////////");
-		
+
+		System.out.println("==============================================");
+		System.out.println("Iniciando el cálculo de los índices silhouette");
+		System.out.println("==============================================");
+		System.out.println("	");
+
 		while (it.hasNext()) {
 			Cluster c = it.next();
-			ClusterID++;
-			iporCluster = 0;
 			sumaPorCluster = 0;
 			Iterator<Instancia> it2 = c.getInstancias().getIterator();
 			while (it2.hasNext()) {
 				Instancia inst = it2.next();
 				i = i + 1;
-				iporCluster++;
 				double sh = this.getSilhouette(inst, c);
 				shilhouette = shilhouette + sh;
 				sumaPorCluster = sumaPorCluster + sh;
 				this.getSilhouette(inst, c);
 			}
-			
-			System.out.println("Cluster " + ClusterID + " :");
-			System.out.println("	Indice Sillhouette : " + sumaPorCluster/iporCluster);
-			System.out.println("	Número de Instancias : " + iporCluster);
-			System.out.println();
+
+			System.out.println("======================================================");
+			System.out.println("Se ha terminado de calcular los índices de silhouette.");
+			System.out.println("======================================================");
+			System.out.println("	");
 
 		}
 
 		return shilhouette / i;
 	}
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////// MÉTODOS
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// /////////////////////////////////////////////////
-	////////////////////////////// PARA CALCULAR
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// /////////////////////////////////////////////////
-	///////////////////////////// EL SILHOUETTE
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// /////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * Método para obtener un Vector Aleatorio
@@ -309,6 +332,18 @@ public class KmeansAlgorithm {
 	public Instancia getVectorAleatorio() {
 
 		return DataBase.getDataBase().getRandomVector();
+	}
+
+	public void reasignarResultado(ArrayList<Cluster> pClusters) {
+		/*
+		 * for(Cluster tmp : resultado){ if(!pClusters.contains(tmp)){
+		 * resultado.remove(tmp); } }
+		 */
+		for (int i = 0; i < resultado.size(); i++) {
+			if (!pClusters.contains(resultado.get(i))) {
+				resultado.remove(resultado.get(i));
+			}
+		}
 	}
 
 	/**
@@ -325,7 +360,6 @@ public class KmeansAlgorithm {
 		int j = 0;
 		ArrayList<Cluster> Clusters = new ArrayList<Cluster>();
 		Iterator<Cluster> it = resultado.iterator();
-		
 
 		while (it.hasNext()) {
 
@@ -334,7 +368,7 @@ public class KmeansAlgorithm {
 			while (it2.hasNext()) {
 				Cluster c2 = it2.next();
 				// if(matriz[i][j]!=null)
-				double dis = (double) c.getVector().getDistanceTo(c2.getVector().getLista(), tipoDistancia);
+				double dis = c.getVector().getDistanceTo(c2.getVector().getLista(), tipoDistancia);
 				matriz[i][j] = dis;
 				// matriz[j][i] = dis;
 				j = j + 1;
@@ -354,7 +388,7 @@ public class KmeansAlgorithm {
 				if (matriz[i][j] > disdef) {
 					idef = i;
 					jdef = j;
-					disdef = (double) matriz[i][j];
+					disdef = matriz[i][j];
 				}
 				j++;
 			}
@@ -364,99 +398,6 @@ public class KmeansAlgorithm {
 		Clusters.add(resultado.get(idef));
 		Clusters.add(resultado.get(jdef));
 		return Clusters;
-	}
-	
-	
-	public void asignarKClustersMasAlejados(ArrayList<Cluster> pClusters) {
-		while (pClusters.size()<k){
-			Iterator<Cluster> it = resultado.iterator();
-			Iterator<Cluster> it2 = resultado.iterator();
-			Iterator<Cluster> it3 = pClusters.iterator();
-			int i = 0;
-			int j = 0;
-			int index = 0;
-			double[][] matriz = new double[resultado.size()][resultado.size()];
-			double dis = 0;
-			while (it.hasNext()){
-				Cluster c = it.next();
-				if(!pClusters.contains(c)){
-					while(it2.hasNext()){
-						Cluster c2 = it2.next();
-						if(pClusters.contains(c2)){
-							ArrayList<Double> aDis = new ArrayList<Double>();
-							while(it3.hasNext()){
-								Cluster c3 = it3.next();
-								aDis.add(c.getVector().getDistanceTo(c3.getVector().getLista(), tipoDistancia));
-							}
-							matriz[i][j] = getMinimo(aDis);
-						}else{
-							matriz[i][j] = c.getVector().getDistanceTo(c2.getVector().getLista(), tipoDistancia);
-						}
-						j++;
-					}
-					i++;
-				}				
-			}
-			dis = matriz[0][0];
-			i=j=0;
-			while(i<resultado.size()){
-				while(j<resultado.size()){
-					if(dis<matriz[i][j]){
-						dis = matriz[i][j];
-						index = i;
-					}
-					j++;
-				}
-				i++;
-			}
-			pClusters.add(resultado.get(index));
-		}
-		reasignarResultado(pClusters);
-	}
-	
-	public void reasignarResultado(ArrayList<Cluster> pClusters){
-	/*	for(Cluster tmp : resultado){
-			if(!pClusters.contains(tmp)){
-				resultado.remove(tmp);
-			}
-		}*/
-		for(int i = 0; i<resultado.size(); i++){
-			if(!pClusters.contains(resultado.get(i))){
-				resultado.remove(resultado.get(i));
-			}
-		}
-	}
-	
-	public double getMinimo(ArrayList<Double> pArray){
-			double min = Double.MAX_VALUE;
-			
-			for (Double tmp : pArray){
-				if(tmp < min){
-					min = tmp;
-				}
-			}
-			
-			return min;
-	}
-	
-	/**
-	 * Asigna vectores en la variación de División del K-Means
-	 */
-	private void asignarVectorDivisionClusters() {
-		// vamos a dividir las instancias en tantos grupos como clusters haya
-		// el orden de la división será segun viene en el .arff
-		// y escogeremos un vector aleatorio de cada grupo y se lo asignaremos a
-		// cada cluster
-		int i = 0;
-		System.out.println("Valores de los centroides iniciales: ");
-		while (i < k) {
-			Cluster nuevo = new Cluster(getVectorAleatorioDivision(k, i));
-			if (!resultado.contains(nuevo)) {
-				resultado.add(nuevo);
-				nuevo.printCentroide();
-				i++;
-			}
-		}
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

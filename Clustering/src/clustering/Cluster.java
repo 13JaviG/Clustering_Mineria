@@ -1,7 +1,10 @@
 package clustering;
 
-import java.util.ArrayList;
 import java.util.Iterator;
+
+import org.apache.commons.math3.linear.Array2DRowRealMatrix;
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.linear.RealVector;
 
 /**
  * clase que representa un cluster con su centroide e instancias
@@ -36,7 +39,7 @@ public class Cluster {
 	 * @param tipoDistancia
 	 * @return
 	 */
-	public double calcularDistancia(ArrayList<String> pVector, String tipoDistancia) {
+	public double calcularDistancia(double[] pVector, String tipoDistancia) {
 		return distancia = this.clusterVector.getDistanceTo(pVector, tipoDistancia);
 	}
 
@@ -52,7 +55,7 @@ public class Cluster {
 	 *
 	 * @return
 	 */
-	public ArrayList<String> getCentroide() {
+	public double[] getCentroide() {
 		return this.clusterVector.getLista();
 	}
 
@@ -128,7 +131,7 @@ public class Cluster {
 	public void recalcularCentroide() {
 		if (!this.instancias.getInstancias().isEmpty()) {
 			// recalcula el centroide haciendo el vector medio
-			ArrayList<String> sumaVectores = null;
+			double[] sumaVectores = null;
 			this.instancias.getInstancias().get(0).getLista();
 			Iterator<Instancia> it = this.instancias.getInstancias().iterator();
 			while (it.hasNext()) {
@@ -166,31 +169,29 @@ public class Cluster {
 	 * @param size
 	 * @return
 	 */
-	private ArrayList<String> mediaVectores(ArrayList<String> sumaVectores, int size) {
-		ArrayList<String> nuevo = new ArrayList<String>();
-		Iterator<String> it = sumaVectores.iterator();
-		while (it.hasNext()) {
-			nuevo.add(Double.toString(Double.parseDouble(it.next()) / size));
-		}
-		return nuevo;
+	private double[] mediaVectores(double[] sumaVectores, int size) {
+		double[] matrixData = sumaVectores;
+		RealMatrix m = new Array2DRowRealMatrix(matrixData);
+		RealVector realvector1 = m.getColumnVector(0);
+		double[] div = realvector1.mapDivide(size).toArray();
+		return div;
 	}
 
 	/**
 	 * nos devuelve la suma de dos vectores
-	 * 
+	 *
 	 * @param sumaVectores
 	 * @param lista
 	 * @return
 	 */
-	private ArrayList<String> sumarVectores(ArrayList<String> sumaVectores, ArrayList<String> lista) {
-		ArrayList<String> nuevo = new ArrayList<String>();
-		Iterator<String> it1 = sumaVectores.iterator();
-		Iterator<String> it2 = lista.iterator();
-		while (it1.hasNext() && it2.hasNext()) {
-			double value = Double.parseDouble(it1.next()) + Double.parseDouble(it2.next());
-			nuevo.add(Double.toString(value));
-		}
-		return nuevo;
+	private double[] sumarVectores(double[] sumaVectores, double[] lista) {
+		double[] matrixData = sumaVectores;
+		RealMatrix m = new Array2DRowRealMatrix(matrixData);
+		double[] matrixData2 = lista;
+		RealMatrix n = new Array2DRowRealMatrix(matrixData2);
+		RealMatrix p = m.add(n);
+		double[] misuma = p.getColumn(0);
+		return misuma;
 	}
 
 }

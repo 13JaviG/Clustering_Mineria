@@ -10,7 +10,7 @@ public class MainClass {
 	}
 
 	public void ejecutar() {
-		kmeans = new KmeansAlgorithm(2, "singlelink", "2kclusters", 100, 0.00000000000000, "euclidea");
+		kmeans = new KmeansAlgorithm(5, "singlelink", "aleatorio", 100, 0.0, "manhattan");
 		kmeans.calcularKmeans();
 		System.out.println("////////////////////////////////////////////////////////////////////////////");
 		System.out.println("Shilhouette del agrupamiento total :" + kmeans.getSilhouetteAgrupamiento());

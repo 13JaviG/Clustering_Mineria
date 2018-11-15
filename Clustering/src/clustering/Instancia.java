@@ -31,6 +31,14 @@ public class Instancia {
 		numInst = pNumInst;
 	}
 
+	public String atrInstancia() {
+		return "- " + listaAtributos;
+	}
+
+	public String datosInstancia() {
+		return Integer.toString(numInst) + " - " + listaAtributos;
+	}
+
 	/**
 	 * devuelve la distancia de la instancia con otra(pVector), según el tipo de
 	 * distancia
@@ -124,15 +132,7 @@ public class Instancia {
 	public void print() {
 		System.out.println(numInst + "- " + Arrays.toString(listaAtributos));
 	}
-	
-	
-	public String datosInstancia(){
-		return (Integer.toString(numInst) + " - " + listaAtributos);
-	}
-	
-	public String atrInstancia(){
-		return ("- " + listaAtributos);
-	}
+
 	/**
 	 * modifica el valor de los atributos de la instancia
 	 *

@@ -9,12 +9,12 @@ public class MainClass {
 
 	}
 
-	public void ejecutar() {
+	public void ejecutar(int clusters, String init, int it, float conv, String dist, String res) {
 
-		kmeans = new KmeansAlgorithm(2, "aleatorio", 100, 0.0, "euclidea");
+		kmeans = new KmeansAlgorithm(clusters, init, it, conv, dist);
 		kmeans.calcularKmeans();
 		kmeans.getSilhouetteAgrupamiento();
-		kmeans.getResultados("resultados");
+		kmeans.getResultados(res);
 
 	}
 

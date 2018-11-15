@@ -19,12 +19,14 @@ import weka.filters.unsupervised.instance.SparseToNonSparse;
 public class TransformRaw {
 
 	/**
-	 * Transforma el espacio de atributos del conjunto de entrenamiento a TF-IDF
-	 * Sparse. args[0]: es el path donde se encuentra el Raw a transformar. args[1]:
-	 * es el path donde vas a depositar el Raw ya transformado.
+	 * Transforma el espacio de atributos del conjunto de entrenamiento a TF-IDF en
+	 * formato Non Sparse y realiza un proceso de filtrado para eliminar atributos e
+	 * instancias que no sean relevantes para el clustering.
 	 * 
 	 * @param args
-	 *            ParÃ¡metros de entrada.
+	 *            Parámetros de entrada: args[0]: es el path donde se encuentra el
+	 *            Raw a transformar. args[1]: es el path donde vas a depositar el
+	 *            Raw ya transformado en TFIDF.
 	 */
 
 	public static void main(String[] args) throws Exception {
@@ -35,6 +37,9 @@ public class TransformRaw {
 		pathIn = args[0];
 		pathOut = args[1];
 
+		System.out.println("Transformando el .arff a TFIDF...");
+		System.out.println("");
+
 		/*
 		 * Indicamos la clase y cargamos las instancias
 		 */
@@ -43,18 +48,23 @@ public class TransformRaw {
 		StringToWordVector filter;
 		Instances dataFiltered = null;
 		String relationName = data.relationName();
+
+		// Creamos un stemmer en su versión en español
 		SnowballStemmer ss = new SnowballStemmer("spanish");
 
 		/*
-		 * Transformamos el arff raw a TF-IDF
+		 * Creamos el filtro StringToWordVector
 		 */
 		filter = new StringToWordVector();
-		// Indicamos que tiene que pasar a minï¿½sculas todas las letras del texto
+		// Indicamos que tiene que pasar a minúsculas todas las letras del texto
 		filter.setLowerCaseTokens(true);
 
-		// Creamos un Tokenizer y le indicamos quï¿½ sï¿½mbolos tiene que excluir
+		// Creamos un Tokenizer y le indicamos qué símbolos tiene que excluir
 		AlphabeticTokenizer tokenizer = new AlphabeticTokenizer();
 		filter.setTokenizer(tokenizer);
+
+		// Especificamos todas las opciones indicadas anteriormente y aplicamos el
+		// filtro.
 		filter.setStemmer(ss);
 		filter.setTFTransform(true);
 		filter.setIDFTransform(true);
@@ -94,17 +104,11 @@ public class TransformRaw {
 		dataFiltered = Filter.useFilter(dataFiltered, removevFilter);
 
 		/*
-		 * RemoveWithValues removevFilter2 = new RemoveWithValues();
-		 * removevFilter2.setAttributeIndex(Integer.toString(dataFiltered.numAttributes(
-		 * ))); removevFilter2.setNominalIndices(Integer.toString(2));
-		 * removevFilter2.setInputFormat(dataFiltered); dataFiltered =
-		 * Filter.useFilter(dataFiltered, removevFilter2);
-		 */
-		/*
-		 * Obtener Stopwords de nuestro conjunto de datos
+		 * A partir de una lista de stopwords predeterminada, eliminamos los atributos
+		 * que coincidan con estos.
 		 */
 		Stopwords stopFilter = new Stopwords();
-		stopFilter.read(new File("C:/Users/olizy/Clustering_Mineria/Clustering/stopwords-es.txt"));
+		stopFilter.read(new File("stopwords-es.txt"));
 		List<Integer> words = new ArrayList<Integer>();
 		for (int i = 0; i < dataFiltered.numAttributes(); i++) {
 			if (stopFilter.is(dataFiltered.attribute(i).name())) {
@@ -134,7 +138,6 @@ public class TransformRaw {
 		int[] iu = new int[2];
 		iu[0] = (dataFiltered.numAttributes() - 2);
 		iu[1] = (dataFiltered.numAttributes() - 1);
-		//filtroEliminar2.setAttributeIndices(Integer.toString(dataFiltered.numAttributes() - 1));
 		filtroEliminar2.setAttributeIndicesArray(iu);
 		filtroEliminar2.setInputFormat(dataFiltered);
 		dataFiltered = Filter.useFilter(dataFiltered, filtroEliminar2);
@@ -146,14 +149,8 @@ public class TransformRaw {
 		NormalizeFilter.setInputFormat(dataFiltered);
 		dataFiltered = Filter.useFilter(dataFiltered, NormalizeFilter);
 
-		/*
-		 * Hacemos que la clase sea el último atributo
-		 * 
-		 * Reorder reorderFilter = new Reorder();
-		 * reorderFilter.setInputFormat(dataFiltered); reorderFilter.setOptions(new
-		 * String[]{"-R","2-last,1"}); dataFiltered = Filter.useFilter(dataFiltered,
-		 * reorderFilter); dataFiltered.setClassIndex(dataFiltered.numAttributes()-1);
-		 */
+		System.out.println("Aplicando filtros...");
+		System.out.println("");
 
 		/*
 		 * Damos a la relación su nombre original
@@ -165,6 +162,8 @@ public class TransformRaw {
 		 */
 		CommonUtilities.saveArff(dataFiltered, pathOut);
 
+		System.out.println("Se ha convertido el .arff raw a formato TFIDF non sparse y se ha filtrado.");
+		System.out.println("");
 	}
 
 }

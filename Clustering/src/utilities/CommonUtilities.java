@@ -165,7 +165,7 @@ public class CommonUtilities {
 	public static void getResultados(String pathOut, ArrayList<Cluster> clusters, double sil){
 		
 		try {
-			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(new File(pathOut + "_quality.txt"))));
+			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(new File(pathOut))));
 			writer.println("==========================================================================================================");
 			writer.println("COORDENADAS DE LOS CENTROIDES:");
 			writer.println("==========================================================================================================");

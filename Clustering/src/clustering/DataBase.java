@@ -17,8 +17,8 @@ import weka.core.converters.ArffLoader.ArffReader;
  */
 public class DataBase {
 
-	private static DataBase			miDataBase;
-	private final ListaInstancias	instancias;
+	private static DataBase miDataBase;
+	private final ListaInstancias instancias;
 
 	/**
 	 * constructora
@@ -51,7 +51,6 @@ public class DataBase {
 	 */
 	public void inicializarInstancias() {
 		readArff();
-		instancias.print();
 	}
 
 	/**
@@ -62,13 +61,7 @@ public class DataBase {
 		BufferedReader reader;
 		try {
 			// leemos el fichero arff
-			reader = new BufferedReader(new FileReader(
-					// "C:/Users/803145/git/Clustering_Mineria/Clustering/src/arffFiles/diabetesTFIDF.arff"));
-					"C:/Users/Frank/git/Clustering_Mineria/Clustering/src/arffFiles/ArticlesTFIDFv8.arff"));
-			// "C:/Users/docenciaeib/Downloads/autopsiaTFIDF.arff"));
-			// "C:/Users/User/git/Clustering_Mineria/Clustering/src/arffFiles/diabetestfidf.arff"));
-			// "C:/Users/docenciaeib/git/Clustering_Mineria/Clustering/src/arffFiles/diabetestfidf.arff"));
-			// "C:\Users\Javi\git\Clustering_Mineria\Clustering\src\arffFiles\diabetestfidf.arff"
+			reader = new BufferedReader(new FileReader("ArticlesTFIDF.arff"));
 			ArffReader arff = new ArffReader(reader);
 			// obtenemos las instancias
 			Instances data = arff.getData();

@@ -50,8 +50,8 @@ public class TransformRaw {
 		String relationName = data.relationName();
 
 		// Creamos un stemmer en su versión en español
-		SnowballStemmer ss = new SnowballStemmer("spanish");
-
+		SnowballStemmer ss = new SnowballStemmer();
+		ss.setStemmer("spanish");
 		/*
 		 * Creamos el filtro StringToWordVector
 		 */
@@ -108,7 +108,7 @@ public class TransformRaw {
 		 * que coincidan con estos.
 		 */
 		Stopwords stopFilter = new Stopwords();
-		stopFilter.read(new File("src/stopwords-es.txt"));
+		stopFilter.read(new File("stopwords-es.txt"));
 		List<Integer> words = new ArrayList<Integer>();
 		for (int i = 0; i < dataFiltered.numAttributes(); i++) {
 			if (stopFilter.is(dataFiltered.attribute(i).name())) {

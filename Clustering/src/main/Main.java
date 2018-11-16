@@ -5,20 +5,18 @@ import preProcessing.GetRawPlain;
 import preProcessing.TransformRaw;
 
 public class Main {
-
-	Double time;
-
 	/**
 	 * Este es el programa principal de todo el paquete, que permite, primero
-	 * convertir un conjunto de datos en TFIDF para luego realizar un algoritmo
-	 * de clustering kmeans y obtener un fichero de texto que contiene los
-	 * resultados además de un índice de calidad Silhouette.
+	 * convertir un conjunto de datos en TFIDF para luego realizar un algoritmo de
+	 * clustering kmeans y obtener un fichero de texto que contiene los resultados
+	 * además de un índice de calidad Silhouette.
 	 *
 	 * @param args
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
 		String factor = "0.0015";
+		boolean check = false;
 		if (args.length == 7) {
 			if (args[3].equals("-ma") && args[4].equals("-2k")) {
 
@@ -36,6 +34,7 @@ public class Main {
 				params2[1] = "ArticlesTFIDF.arff";
 				TransformRaw.main(params2);
 				MainClass.getMainClass().ejecutar(clusters, "2kclusters", it, conv, "manhattan", args[1]);
+				check = true;
 			} else if (args[3].equals("-ma") && args[4].equals("-a")) {
 				int clusters = Integer.parseInt(args[2]);
 				int it = Integer.parseInt(args[5]);
@@ -52,6 +51,7 @@ public class Main {
 				TransformRaw.main(params2);
 
 				MainClass.getMainClass().ejecutar(clusters, "aleatorio", it, conv, "manhattan", args[1]);
+				check = true;
 			} else if (args[3].equals("-mi") && args[4].equals("-2k")) {
 				int clusters = Integer.parseInt(args[2]);
 				int it = Integer.parseInt(args[5]);
@@ -68,6 +68,7 @@ public class Main {
 				TransformRaw.main(params2);
 
 				MainClass.getMainClass().ejecutar(clusters, "2kclusters", it, conv, "minkowski", args[1]);
+				check = true;
 
 			} else if (args[3].equals("-mi") && args[4].equals("-a")) {
 				int clusters = Integer.parseInt(args[2]);
@@ -85,6 +86,7 @@ public class Main {
 				TransformRaw.main(params2);
 
 				MainClass.getMainClass().ejecutar(clusters, "aleatorio", it, conv, "minkowski", args[1]);
+				check = true;
 			} else if (args[3].equals("-e") && args[4].equals("-2k")) {
 				int clusters = Integer.parseInt(args[2]);
 				int it = Integer.parseInt(args[5]);
@@ -101,6 +103,7 @@ public class Main {
 				TransformRaw.main(params2);
 
 				MainClass.getMainClass().ejecutar(clusters, "2kclusters", it, conv, "euclidea", args[1]);
+				check = true;
 
 			} else if (args[3].equals("-e") && args[4].equals("-a")) {
 				int clusters = Integer.parseInt(args[2]);
@@ -118,6 +121,7 @@ public class Main {
 				TransformRaw.main(params2);
 
 				MainClass.getMainClass().ejecutar(clusters, "aleatorio", it, conv, "euclidea", args[1]);
+				check = true;
 			}
 		} else if (args.length == 0) {
 			System.out.println("****Clustering semántico****\n");
@@ -142,7 +146,11 @@ public class Main {
 			utilities.CommonUtilities.printlnError("Numero de parametros incorrecto");
 			System.exit(1);
 		}
-		System.out.println("Se ha terminado y se ha generado el fichero de resultados.");
+		if (check) {
+			System.out.println("Se ha terminado y se ha generado el fichero de resultados.");
+		} else {
+			System.out.println("Error en la introducción de los parámetros.");
+		}
 		System.exit(0);
 	}
 }

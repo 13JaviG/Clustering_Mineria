@@ -61,7 +61,7 @@ public class Instancia {
 			// pasos para obtener minkowski
 			RealVector negativo = realvector2.mapMultiply(-1);
 			RealVector negativo1 = negativo.add(realvector1);
-			Power pow = new Power(0.133333);
+			Power pow = new Power(7.5);
 			Abs abs = new Abs();
 			// valor abs negativo1
 			RealVector negativo3 = negativo1.mapToSelf(abs);

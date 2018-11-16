@@ -54,6 +54,7 @@ public class KmeansAlgorithm {
 		while (it.hasNext()) {
 			Cluster nuevo = it.next();
 			if (nuevo.calcularDistancia(pInst.getLista(), tipoDistancia) < distancia) {
+				distancia = nuevo.calcularDistancia(pInst.getLista(), tipoDistancia);
 				pos = i;
 			}
 			i++;

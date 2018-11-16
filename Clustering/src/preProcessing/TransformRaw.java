@@ -50,7 +50,8 @@ public class TransformRaw {
 		String relationName = data.relationName();
 
 		// Creamos un stemmer en su versión en español
-		SnowballStemmer ss = new SnowballStemmer("spanish");
+		SnowballStemmer ss = new SnowballStemmer();
+		ss.setStemmer("spanish");
 
 		/*
 		 * Creamos el filtro StringToWordVector
